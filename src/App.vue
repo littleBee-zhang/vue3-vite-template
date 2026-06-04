@@ -4,6 +4,9 @@
 
 <script setup>
 // 无需写任何代码
+onMounted(()=>{
+  console.log('含有token重新获取菜单-或者刷新页面获取菜单');
+})
 </script>
 
 <style lang="scss">

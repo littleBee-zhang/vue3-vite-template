@@ -10,7 +10,8 @@ import App from './App.vue'
 import router from './router'
 import './style.css'// 引入主题样式
 import './styles/theme.scss'
-// import './styles/element.scss'
+// 
+import store from './store' // 引入
 const app = createApp(App)
 
 // 一键全局注册 Former、Table等
@@ -22,6 +23,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.use(router)
+app.use(store) // 挂载
 app.mount('#app')
 // ✨ 设置默认深色主题
 document.documentElement.className = ''

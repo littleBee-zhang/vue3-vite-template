@@ -110,3 +110,135 @@
   /* 边框 */
   --el-border-color: #dcdfe6;
 }
+/* ==================================
+   5. 黄色/活力主题
+================================== */
+:root.yellow {
+  --el-color-primary: #FFB800;
+  --el-color-success: #00B42A;
+  --el-color-warning: #FF9F40;
+  --el-color-danger: #F53F3F;
+
+  /* 背景 */
+  --el-bg-color-page: #FFF7E6;
+  --el-bg-color: #FFFFFF;
+  --el-bg-color-overlay: #FFFFFF;
+
+  /* 表格 */
+  --el-table-header-bg-color: #FFF1CC;
+  --el-table-row-hover-bg-color: #FFF7E6;
+
+  /* 表单 */
+  --el-input-bg-color: #FFFFFF;
+  --el-input-border-color: #FFD591;
+
+  /* 弹窗 */
+  --el-dialog-bg-color: #FFFFFF;
+}
+/* ==================================
+   6. 红色主题
+================================== */
+:root.red {
+  --el-color-primary: #F53F3F;
+  --el-color-success: #00B42A;
+  --el-color-warning: #FF7D00;
+  --el-color-danger: #F53F3F;
+
+  /* 背景 */
+  --el-bg-color-page: #FFF2F2;
+  --el-bg-color: #FFFFFF;
+  --el-bg-color-overlay: #FFFFFF;
+
+  /* 表格 */
+  --el-table-header-bg-color: #FFE6E6;
+  --el-table-row-hover-bg-color: #FFF2F2;
+
+  /* 表单 */
+  --el-input-bg-color: #FFFFFF;
+  --el-input-border-color: #FFB3B3;
+
+  /* 弹窗 */
+  --el-dialog-bg-color: #FFFFFF;
+}
+/* ==================================
+   7. 紫色主题
+================================== */
+:root.purple {
+  --el-color-primary: #7B61FF;
+  --el-color-success: #00B42A;
+  --el-color-warning: #FF7D00;
+  --el-color-danger: #F53F3F;
+
+  --el-bg-color-page: #F7F0FF;
+  --el-bg-color: #FFFFFF;
+  --el-bg-color-overlay: #FFFFFF;
+
+  --el-table-header-bg-color: #EFE5FF;
+  --el-table-row-hover-bg-color: #F7F0FF;
+
+  --el-input-bg-color: #FFFFFF;
+  --el-input-border-color: #D9CEFF;
+  --el-dialog-bg-color: #FFFFFF;
+}
+/* ==================================
+   8. 粉色主题
+================================== */
+:root.pink {
+  --el-color-primary: #FF69B4;
+  --el-color-success: #00B42A;
+  --el-color-warning: #FF7D00;
+  --el-color-danger: #F53F3F;
+
+  --el-bg-color-page: #FFF0F6;
+  --el-bg-color: #FFFFFF;
+  --el-bg-color-overlay: #FFFFFF;
+
+  --el-table-header-bg-color: #FFE0EF;
+  --el-table-row-hover-bg-color: #FFF0F6;
+
+  --el-input-bg-color: #FFFFFF;
+  --el-input-border-color: #FFC0E0;
+  --el-dialog-bg-color: #FFFFFF;
+}
+/* ==================================
+   9. 青色主题
+================================== */
+:root.cyan {
+  --el-color-primary: #00C9D6;
+  --el-color-success: #00B42A;
+  --el-color-warning: #FF7D00;
+  --el-color-danger: #F53F3F;
+
+  --el-bg-color-page: #E6FFFE;
+  --el-bg-color: #FFFFFF;
+  --el-bg-color-overlay: #FFFFFF;
+
+  --el-table-header-bg-color: #CCFFFC;
+  --el-table-row-hover-bg-color: #E6FFFE;
+
+  --el-input-bg-color: #FFFFFF;
+  --el-input-border-color: #99EEFF;
+  --el-dialog-bg-color: #FFFFFF;
+}
+/* ==================================
+   10. 纯暗黑主题
+================================== */
+:root.dark {
+  --el-color-primary: #6E79FF;
+
+  --el-bg-color-page: #121212;
+  --el-bg-color: #1E1E1E;
+  --el-bg-color-overlay: #1E1E1E;
+
+  --el-table-header-bg-color: #2A2A2A;
+  --el-table-row-hover-bg-color: #252525;
+  --el-table-current-row-bg-color: #252525;
+
+  --el-input-bg-color: #2A2A2A;
+  --el-input-border-color: #383838;
+  --el-dialog-bg-color: #1E1E1E;
+
+  --el-text-color-primary: #F5F5F5;
+  --el-text-color-regular: #CFCFCF;
+  --el-border-color: #383838;
+}
