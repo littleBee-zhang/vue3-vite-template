@@ -1,15 +1,66 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { dynamicRouteToVueRoute, mergeMenu } from './dynamicRouter'
+import { menuRoutes } from './defaultRoutes'
+import { getMenu } from '@/api/menu'
 import request from '@/utils/request'
+import Layout from '@/layout/Index.vue'
 
+// 基础路由 -- (menuRoutes-默认路由)
+const baseRoutes = [
+  { path: '/',redirect: '/home',},
+  { path: '/login', component: () => import('@/views/login/index.vue'),  meta: { hidden: true }  },
+  { path: '/', component: Layout, redirect: '/home', children: menuRoutes},
+]
 const router = createRouter({
   history: createWebHistory(),
-//   routes: [...]
+  routes: baseRoutes,
 })
 
-//切换页面取消当前页面所有pending请求
-router.beforeEach((to, from, next) => {
+let isDynamicRouteAdded = false
+
+router.beforeEach(async (to, from, next) => {
   request.cancelAllRequest()
-  next()
+
+  // 登录页直接放行
+  if (to.path === '/login') {
+    return next()
+  }
+  const token = localStorage.getItem('token')
+  if (!token) {
+    return next('/login')
+  }
+
+  // 已经添加过动态路由 → 不再重复添加 
+  if (isDynamicRouteAdded) {
+    return next()
+  }
+
+  try {
+    // 获取后端菜单
+    // const res = await getMenu().catch(() => ({ menus: [] }))
+    
+    // const menus = res.menus || []
+
+    // 合并：默认菜单 + 动态菜单
+    const mergedMenus = mergeMenu([], [])
+
+    // 转成 vue 路由
+    const dynamicRoutes = dynamicRouteToVueRoute(mergedMenus)
+
+    // 批量添加动态路由
+    dynamicRoutes.forEach(route => {
+      router.addRoute(route)
+    })
+
+    isDynamicRouteAdded = true
+
+    // 安全跳转，不会死循环
+    next({ path: to.fullPath, replace: true })
+  } catch (e) {
+    console.log(e,'e');
+    next('/login')
+    
+  }
 })
 
 export default router

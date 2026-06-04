@@ -139,7 +139,7 @@ service.interceptors.response.use(
     if (error.response?.status === 401) {
       ElMessage.error('登录已过期，请重新登录')
       sessionStorage.removeItem('token')
-      window.location.href = '/login'
+      // window.location.href = '/login'
     } else {
       ElMessage.error(error.message || '网络异常')
     }
