@@ -1,6 +1,6 @@
 // ====================== 白名单 ======================
 /** 完整返回后端全部字段白名单 **/ 
-export const FULL_RESPONSE_WHITE_LIST = ['/user/info', '/system/config', '/login/getCode']
+export const FULL_RESPONSE_WHITE_LIST = ['/9095/xzqh/getList', '/system/config', '/login/getCode']
 /** 不需要token白名单 **/ 
 export const NO_TOKEN_WHITE_LIST = ['/user/login', '/user/register', '/login/getCode']
 /** 需要自动md5加密password白名单 **/ 

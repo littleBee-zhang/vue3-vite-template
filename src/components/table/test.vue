@@ -2,7 +2,7 @@
   <div class="table-card my-table">
     <el-table
       ref="tableRef"
-      v-bind="{ ...$attrs }"
+      v-bind="{...$attrs}"
       v-loading="loading"
       :data="dataSource"
       :default-sort="defaultSort"
@@ -32,7 +32,7 @@
         type="index"
         :width="showIndexWidth || 72"
         :label="showIndexLabel || '序号'"
-        :index="indexMethod || defaultIndexMethod"
+        :index="indexMethod"
       />
 
       <!-- 展开列 -->
@@ -49,7 +49,7 @@
       <!-- 动态遍历列 -->
       <el-table-column
         v-for="col in columns"
-        :key="col.dataIndex || col.key || col.title"
+        :key="col.dataIndex || col.key"
         :prop="col.dataIndex"
         :label="col.title"
         :width="col.width"
@@ -68,76 +68,68 @@
         <template v-else-if="$slots[`customRender_${col.dataIndex}`]" #default="scope">
           <slot :name="`customRender_${col.dataIndex}`" v-bind="scope" />
         </template>
-
-        <!-- 按钮/二次确认 -->
-        <template v-else-if="col.confirm" #default="scope">
-          <el-space direction="horizontal" alignment="start" :size="spaceSize">
-            <template v-for="(item, idx) in col.confirm" :key="idx">
-              <!-- 二次确认按钮 -->
-              <el-popconfirm
-                v-if="item.onConfirm"
-                v-bind="{ ...item }"
-                :title="item.title || '确认执行此操作？'"
-                :confirm-button-text="item.okText || '确认'"
-                :cancel-button-text="item.cancelText || '取消'"
-                :icon="item.icon"
-                :icon-color="item.iconColor"
-                width="160"
-                @confirm="handleConfirm(item, scope.row, scope.$index, scope.column)"
-              >
-                <template #reference>
-                  <el-button
-                    size="small"
-                    v-bind="{ ...(item.buttonProps || {}) }"
-                    :type="item.buttonType || 'primary'"
-                    @click.stop
-                  >
-                    {{ item.buttonText || '操作' }}
-                  </el-button>
-                </template>
-              </el-popconfirm>
-
-              <!-- 普通按钮 -->
-              <el-button
-                v-else
-                size="small"
-                v-bind="{ ...(item.buttonProps || {}) }"
-                :type="item.buttonType || 'primary'"
-                @click.stop="handleChangeBtn(item, scope.row, scope.$index, scope.column)"
-              >
-                {{ item.buttonText || '操作' }}
-              </el-button>
-            </template>
-          </el-space>
+        <!-- 按钮/二次确认/自定义渲染 -->
+        <template v-else-if="col.render || col.confirm" #default="scope">
+          <span v-if="col.confirm">
+            <el-space direction="horizontal" alignment="start" :size="spaceSize">
+              <span v-for="(item, idx) in col.confirm || []" :key="idx">
+                <el-popconfirm
+                  v-bind="{...item}"
+                  :title="item.title || '确认执行此操作？'"
+                  :confirm-button-text="item.okText || '确认'"
+                  :cancel-button-text="item.cancelText || '取消'"
+                  :icon="item.icon"
+                  :icon-color="item.iconColor"
+                  :width="item.width || '3rem'"
+                  @confirm="handleConfirm(item, scope.row, scope.$index, scope.column)"
+                >
+                  <template #reference>
+                    <el-button
+                      size="small"
+                      v-bind="{...(item?.buttonProps || {})}"
+                      :type="item.buttonType || 'primary'"
+                      @click.stop
+                    >
+                      {{ item.buttonText || '按钮' }}
+                    </el-button>
+                  </template>
+                </el-popconfirm>
+                <el-button
+                  size="small"
+                  v-bind="{...(item?.buttonProps || {})}"
+                  :type="item.buttonType || 'primary'"
+                  @click.stop="handleChangeBtn(item, scope.row, scope.$index, scope.column)"
+                >
+                  {{ item.buttonText || '按钮' }}
+                </el-button>
+              </span>
+            </el-space>
+          </span>
+          <component v-else-if="col.render" :is="col.render(scope.row, scope.column)" />
         </template>
 
-        <!-- render 函数渲染 -->
-        <template v-else-if="col.render" #default="scope">
-          <component :is="col.render(scope.row, scope.column, scope.$index)" />
+        <!-- 空数据插槽 -->
+        <template v-if="$slots.empty" #empty>
+          <slot name="empty" />
+        </template>
+        <!-- 底部加载插槽 -->
+        <template v-if="$slots.loading" #append>
+          <slot name="loading" />
         </template>
       </el-table-column>
-
-      <!-- 空数据插槽 -->
-      <template v-if="$slots.empty" #empty>
-        <slot name="empty" />
-      </template>
-      <!-- 底部加载插槽 -->
-      <template v-if="$slots.loading" #append>
-        <slot name="loading" />
-      </template>
     </el-table>
 
     <!-- 分页区域 -->
-    <div v-if="!!pagination" class="pagination-wrapper my-page">
+    <div v-if="pagination" class="pagination-wrapper my-page">
       <el-pagination
+        background
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
-        :total="total"
-        :page-sizes="pagination.pageSizeOptions || [10, 20, 50, 100]"
-        :layout="pagination.layout || 'total, sizes, prev, pager, next, jumper'"
+        :total="total || pagination.total"
+        :page-sizes="pagination.pageSizeOptions || [10,20,50,100]"
+        :layout="layout"
         :show-total="pagination.showTotal !== false"
         :show-quick-jumper="pagination.showQuickJumper || false"
-        background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -146,8 +138,9 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, h } from 'vue'
 
+// Props配置
 const props = defineProps({
   columns: {
     type: Array,
@@ -168,6 +161,10 @@ const props = defineProps({
   pagination: {
     type: [Object, Boolean],
     default: true
+  },
+  layout: {
+    type: String,
+    default:'total,sizes,prev,pager,next,jumper'
   },
   rowSelection: {
     type: [Object, Boolean],
@@ -203,7 +200,7 @@ const props = defineProps({
   },
   stripe: {
     type: Boolean,
-    default: true
+    default: false
   },
   border: {
     type: Boolean,
@@ -212,7 +209,7 @@ const props = defineProps({
   size: {
     type: String,
     default: 'default',
-    validator: (v) => ['large', 'default', 'small'].includes(v)
+    validator: (v) => ['large','default','small'].includes(v)
   },
   maxHeight: {
     type: [Number, String],
@@ -232,10 +229,11 @@ const props = defineProps({
   },
   defaultSort: {
     type: Object,
-    default: () => ({})
+    default: () => ({ prop: 'age', order: 'descending' })
   }
 })
 
+// 自定义事件
 const emit = defineEmits([
   'update:currentPage',
   'update:pageSize',
@@ -245,121 +243,127 @@ const emit = defineEmits([
   'size-change'
 ])
 
-// 响应式
+// 响应式变量
 const tableRef = ref(null)
-const currentPage = ref(1)
-const pageSize = ref(10)
+const currentPage = ref(props.pagination?.current || 1)
+const pageSize = ref(props.pagination?.pageSize || 10)
+const total = computed(() => props.pagination?.total ?? props.dataSource.length)
 const selectedRowKeys = ref([])
 
-// 初始化分页
-onMounted(() => {
-  if (props.pagination && typeof props.pagination === 'object') {
-    currentPage.value = props.pagination.current || 1
-    pageSize.value = props.pagination.pageSize || 10
+// 监听分页props变化
+watch(() => props.pagination, (val) => {
+  if(val && typeof val === 'object'){
+    currentPage.value = val.current || 1
+    pageSize.value = val.pageSize || 10
   }
-})
-
-// 监听分页
-watch(
-  () => props.pagination,
-  (val) => {
-    if (val && typeof val === 'object') {
-      currentPage.value = val.current || 1
-      pageSize.value = val.pageSize || 10
-    }
-  },
-  { deep: true, immediate: true }
-)
-
-// 总数
-const total = computed(() => {
-  if (!props.pagination) return 0
-  return props.pagination.total ?? props.dataSource.length
-})
-
-// 默认序号方法
-const defaultIndexMethod = (index) => {
-  return (currentPage.value - 1) * pageSize.value + index + 1
-}
+},{ deep: true })
 
 // 页码切换
 const handleCurrentChange = (page) => {
   currentPage.value = page
   emit('update:currentPage', page)
   emit('page-change', page, pageSize.value)
-  props.pagination?.onChange?.(page, pageSize.value)
+  if(props.pagination?.onChange){
+    props.pagination.onChange(page, pageSize.value)
+  }
 }
 
-// 每页条数
+// 每页条数切换
 const handleSizeChange = (size) => {
   pageSize.value = size
   emit('update:pageSize', size)
   emit('page-change', currentPage.value, size)
   emit('size-change', size)
-  props.pagination?.onChange?.(currentPage.value, size)
+  if(props.pagination?.onChange){
+    props.pagination.onChange(currentPage.value, size)
+  }
 }
 
-// 多选
-const handleSelectionChange = (val) => {
-  selectedRowKeys.value = val
-  emit('selection-change', val)
-  props.rowSelection?.onChange?.(val)
+// 多选事件
+const handleSelectionChange = (keys) => {
+  selectedRowKeys.value = keys
+  emit('selection-change', keys)
+  if(props.rowSelection?.onChange){
+    props.rowSelection.onChange(keys)
+  }
 }
 
-// 排序
+// 排序事件
 const handleSortChange = ({ prop, order }) => {
-  emit('sort-change', { prop, order })
+  emit('sort-change', { column: prop, prop, order })
 }
 
-// 普通按钮
-const handleChangeBtn = async (item, row, index, column) => {
+// 普通按钮点击
+const handleChangeBtn = async (params, row, index, column) => {
   try {
-    await item.onClick?.(row, index, column)
+    if(params.onClick){
+      const res = await params.onClick(row, index, column)
+      if(res === false) return
+    }
   } catch (err) {
-    console.error('按钮点击异常：', err)
+    console.error('确认操作失败', err)
   }
 }
 
-// 确认按钮
-const handleConfirm = async (item, row, index, column) => {
+// popconfirm二次确认
+const handleConfirm = async (confirm, row, index, column) => {
   try {
-    await item.onConfirm?.(row, index, column)
+    if(confirm.onConfirm){
+      const res = await confirm.onConfirm(row, index, column)
+      if(res === false) return
+    }
   } catch (err) {
-    console.error('确认操作失败：', err)
+    console.error('确认操作失败', err)
   }
 }
 
-// 暴露
+// 对外暴露方法
 defineExpose({
   tableRef,
+  // 清空勾选
   clearSelection: () => tableRef.value?.clearSelection(),
+  // 切换单行选中
   toggleRowSelection: (row, selected) => tableRef.value?.toggleRowSelection(row, selected),
+  // 全选/取消全选
   toggleAllSelection: () => tableRef.value?.toggleAllSelection(),
+  // 获取选中行
   getSelectedRows: () => selectedRowKeys.value,
+  // 刷新表格(清空选中+排序+筛选)
   refresh: () => {
     tableRef.value?.clearSelection()
     tableRef.value?.clearSort()
     tableRef.value?.clearFilter()
   },
+  // 清除排序
   clearSort: () => tableRef.value?.clearSort(),
+  // 清除筛选
   clearFilter: () => tableRef.value?.clearFilter(),
+  // 滚动至指定行
   scrollToRow: (row) => tableRef.value?.scrollToRow(row),
-  getTableEl: () => tableRef.value || {}
+  // 获取table实例
+  getTableData: () => tableRef.value || {}
 })
 </script>
 
 <style scoped lang="scss">
 .table-card {
-  border-radius: 4px;
-  border: 1px solid #dfe0e6;
+  // border-radius: 4px;
+  // border: 1px solid #dfe0f0;
   background: #fff;
   box-sizing: border-box;
   padding: 8px;
-}
 
+  :deep(.el-card__body) {
+    padding: 24px;
+  }
+  :deep(.el-table__header th.el-table__cell ){
+    background: #f5f7fa !important;
+    color: #515a6e !important;
+  }
+}
 .pagination-wrapper {
   display: flex;
   justify-content: flex-end;
-  margin: 16px 8px 8px;
+  margin-top: 20px;
 }
 </style>

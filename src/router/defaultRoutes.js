@@ -13,6 +13,13 @@ export const menuRoutes = [
     hidden:false,
   },
   {
+    path: '/former',
+    component: () => import('@/views/former/index.vue'),
+    menuName:'Former',
+    icon: 'HomeFilled',
+    hidden:false,
+  },
+  {
     path: '/system',
     menuName:'系统管理',
     icon: 'Menu',

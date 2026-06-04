@@ -1,14 +1,13 @@
 <template>
   <div>
     <Card>
-      <!-- <ElButton>12</ElButton> -->
       <Table
+        row-key="id"
         ref="tableRef"
         :columns="columns"
         :data-source="dataList"
         :loading="loading"
         :pagination="pagination"
-        row-key="id"
         @selection-change="handleSelectionChange"
         @page-change="handlePageChange"
         @size-change="handleSizeChange"
@@ -17,8 +16,7 @@
   </div>
 </template>
 <script setup>
-import Table from '@/components/table/index.vue'
-import Card from '@/components/card/index.vue'
+import { getList } from '@/api/index.js'
 // 选中数据
 const selectedRows = ref([])
 const loading = ref(false)
@@ -27,31 +25,54 @@ const tableRef = ref(null)
 const pagination = reactive({
   current:1,
   pageSize:10,
-  total:1
+  total:100
 })
 const columns = ref([
   { title: '姓名', dataIndex: 'name', width:120 },
   { title: '年龄', dataIndex: 'age', width:80, align:'center' },
   { title: '地址', dataIndex: 'address', ellipsis:true },
-      {
-        title: '状态',
-        dataIndex: 'status',
-        width:150,
-        align:'center',
-        render:(row)=> {
-            return h(
-                'span', // 标签名
-                { type: row.status === 0 ? 'danger' : 'success' },
-                () => row.status === 0 ? '失败' : '成功'
-            );
-        }
-      },
+  { title: '地址', dataIndex: 'address', ellipsis:true },
   {
     title: '操作',
     dataIndex: 'action',
     width:150,
     align:'center',
-    customRender:true,
+    fixed:'right',
+    actions:[
+      {
+        key: 'edit',
+        type: 'primary',
+        link:true,
+        content: '编辑',
+        onClick: (row) => {
+          console.log(row,'编辑');
+          if(row?.id){
+
+          }
+        }
+      },
+      
+      // 2. 删除（带确认）
+      {
+        key: 'delete',
+        type: 'danger',
+        link: true,
+        content: '删除',
+        confirm: '确定要删除吗？',
+        onClick: (row) => {}
+      },
+
+      // 3. 普通按钮
+      {
+        key: 'detail',
+        type: 'success',
+        link: true,
+        content: '查看',
+        onClick: (row) => {
+
+        }
+      }
+    ]
   },
 ])
 // 数据源
@@ -62,11 +83,13 @@ const dataList = ref([
 
 // 分页切换
 const handlePageChange = (page,size)=>{
-  pagination.current = 1
+  pagination.current = page
   pagination.pageSize = size
 }
-const handleSizeChange = (page)=>{
-  pagination.current = page
+// 条数切换
+const handleSizeChange = (size)=>{
+  pagination.current = 1
+  pagination.pageSize = size
 }
 // 多选事件
 const handleSelectionChange = (event)=>{
@@ -93,9 +116,8 @@ const handleRefresh = ()=>{
 }
 // 
 onMounted(()=>{
-  loading.value = true
-  setTimeout(()=>{
-    loading.value = false
-  },1000)
+  getList().then(res=>{
+    console.log(res,'res');
+  })
 })
 </script>

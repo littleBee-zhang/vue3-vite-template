@@ -1,0 +1,28 @@
+// 全局覆盖 Element Plus 变量
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  // 主色调（蓝色系）
+  $colors: (
+    'primary': (
+      'base': #165DFF, // 你的主色
+    ),
+    'success': (
+      'base': #00B42A,
+    ),
+    'warning': (
+      'base': #FF7D00,
+    ),
+    'danger': (
+      'base': #F53F3F,
+    ),
+  ),
+
+  // 页面/组件底色 👇 重点在这里
+  $bg-color: #F7F8FA, // 全局背景底色
+  $bg-color-page: #F7F8FA,
+  $bg-color-overlay: #FFFFFF,
+
+  // 边框、文字、阴影
+  $border-color: #E5E6EB,
+  $text-color-primary: #1D2129,
+  $text-color-regular: #4E5969,
+);

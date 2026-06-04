@@ -16,7 +16,7 @@ import {
 } from 'element-plus';
 
 // 导入自定义价格输入组件
-
+import VirtualSelect from '@/components/virtualSelect/index.vue'
 // 统一别名导出
 const elements = {
   Input: ElInput,
@@ -32,8 +32,8 @@ const elements = {
   Cascader: ElCascader,
   TimeSelect: ElTimeSelect,
   Button: ElButton,
-  PriceInput: PriceInput,
   Transfer: ElTransfer,
+  VirtualSelect,
 };
 
 export default elements;

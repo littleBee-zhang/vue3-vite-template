@@ -55,7 +55,42 @@ const columns = ref([
     dataIndex: 'action',
     width:150,
     align:'center',
-    customRender:true,
+    actions:[
+      {
+        key: 'edit',
+        type: 'primary',
+        content: (row) => h(Operation, {
+          title: '编辑',
+          openText: '编辑',
+          onOk: (close) => {
+            console.log('编辑');
+          }
+        }, {
+          default: () => '弹窗表单内容'
+        })
+      },
+      
+      // 2. 删除（带确认）
+      {
+        key: 'delete',
+        type: 'danger',
+        link: true,
+        content: '删除',
+        confirm: '确定要删除吗？',
+        onClick: (row) => {}
+      },
+
+      // 3. 普通按钮
+      {
+        key: 'detail',
+        type: 'success',
+        link: true,
+        content: '查看',
+        onClick: (row) => {
+
+        }
+      }
+    ]
   },
 ])
 // 数据源

@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { ElMessage, ElLoading } from 'element-plus'
 import md5 from 'md5'
 import { BASE_URL } from '@/constant/address.js'
 import { 
@@ -14,7 +13,7 @@ const pendingRequests = new Map() //存储正在进行的请求（去重、取�
 let activeRequests = 0 //当前活跃请求数
 let loadingInstance = null
 let loadingCount = 0 //loading计数器，多个请求共用一个loading，全部结束才关闭
-
+let loadingTimer = null // 超时定时器
 //生成唯一请求标识（method+url+参数）
 const getRequestKey = (config) => {
   const { url, method, params, data } = config
@@ -67,6 +66,12 @@ service.interceptors.request.use(
           background: 'rgba(0,0,0,0.1)'
         })
       }
+      // 增加：超时10秒强制关闭loading，防止卡死
+      if (loadingTimer) clearTimeout(loadingTimer)
+        loadingTimer = setTimeout(() => {
+          closeLoading()
+          console.warn('请求超时，已自动关闭加载')
+        }, 10000) // 10秒超时
     }
     // ====================== 核心：合并 headers（不替换）======================
     // 外部传入的 headers → 合并到默认里，不会覆盖默认
@@ -102,6 +107,10 @@ const closeLoading = () => {
     loadingInstance.close()
     loadingInstance = null
     loadingCount = 0
+  }
+  if (loadingTimer) {
+    clearTimeout(loadingTimer)
+    loadingTimer = null
   }
 }
 
