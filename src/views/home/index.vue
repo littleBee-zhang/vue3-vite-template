@@ -16,6 +16,7 @@
   </div>
 </template>
 <script setup>
+// import { Dialog } from '@/components/index.js'
 import { getList } from '@/api/index.js'
 // 选中数据
 const selectedRows = ref([])
@@ -119,5 +120,16 @@ onMounted(()=>{
   getList().then(res=>{
     console.log(res,'res');
   })
+  //   Dialog.Confirm({
+  //   title: '提示',
+  //   content: '确定要删除吗？',
+  //   type: 'warning',
+  //   onOk: () => {
+  //     console.log('确定')
+  //   },
+  //   onCancel: () => {
+  //     console.log('取消')
+  //   }
+  // })
 })
 </script>

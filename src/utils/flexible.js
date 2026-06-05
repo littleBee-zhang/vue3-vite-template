@@ -1,3 +1,4 @@
+/** 自适应适配方案 **/ 
 (function(win, lib) {
   let doc = win.document;
   let docEl = doc.documentElement;

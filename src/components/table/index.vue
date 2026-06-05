@@ -184,18 +184,15 @@ defineExpose({
 .table-card {
   background: #fff;
   padding: 12px;
-
-  :deep(.el-table__header .el-table__cell) {
-    background: #f5f7fa !important;
-    color: #333;
-    font-weight: 500;
+  :deep(.el-card__body) {
+    padding: 24px;
   }
-/*  修复表格层级高于弹窗问题 */
-  // :deep(.el-table__body-wrapper) {
-  //   z-index: 1 !important;
-  //   position: relative;
-  // }
 }
+.table-card .el-table__header th.el-table__cell{
+    background: #f5f7fa !important;
+    color: #515a6e !important;
+}
+
 .pagination-wrapper {
   display: flex;
   justify-content: flex-end;

@@ -1,4 +1,4 @@
-// import { ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
 
 const widths = { small: 480, medium: 680, large: 880 }
 
@@ -17,7 +17,13 @@ export default function Confirm(options = {}) {
     cancelButtonProps = {},
     onCancel = () => {},
     afterClose = () => {},
-    content = '弹窗内容',
+    content = '弹窗内容',// 👇 新增：点击空白关闭
+    closeOnClickModal = true,
+    // 👇 新增：按ESC关闭
+    closeOnPressEscape = true,// 👇 新增：图标类型（warning / success / info / error）
+    type = '',
+    // 👇 新增：内容居中
+    center = false,
   } = options
 
   const w = widths[width] || width
@@ -30,11 +36,12 @@ export default function Confirm(options = {}) {
     cancelButtonText: cancelText,
     dangerouslyUseHTMLString: true,
     width: w,
+    type: type, // 图标
+    center: center, // 居中
     customClass: cls,
-    center: false,
     showCancelButton: true,
-    closeOnClickModal: true,
-    closeOnPressEscape: true,
+    closeOnClickModal: closeOnClickModal,
+    closeOnPressEscape: closeOnPressEscape,
     ...okButtonProps,
     ...cancelButtonProps,
   })

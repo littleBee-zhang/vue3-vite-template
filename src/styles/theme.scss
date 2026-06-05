@@ -2,7 +2,7 @@
    1. 默认浅色主题
 ======================================= */
 :root {
-  --el-color-primary: #165DFF;
+  --el-color-primary: #409EFF;
   --el-color-success: #00B42A;
   --el-color-warning: #FF7D00;
   --el-color-danger: #F53F3F;
@@ -241,4 +241,49 @@
   --el-text-color-primary: #F5F5F5;
   --el-text-color-regular: #CFCFCF;
   --el-border-color: #383838;
+}
+
+/* ====================== 表格头部主题适配 ====================== */
+:root :deep(.el-table th) {
+  font-weight: 600 !important;
+}
+:root.light :deep(.el-table th) {
+  background: #f5f7fa !important;
+  color: #1d2129 !important;
+}
+:root.dark :deep(.el-table th) {
+  background: #2a2a2a !important;
+  color: #fff !important;
+}
+:root.green :deep(.el-table th) {
+  background: #e6ffed !important;
+  color: #00b42a !important;
+}
+:root.blue :deep(.el-table th) {
+  background: #d1e9ff !important;
+  color: #00a8ff !important;
+}
+:root.yellow :deep(.el-table th) {
+  background: #fff1cc !important;
+  color: #ffb800 !important;
+}
+:root.red :deep(.el-table th) {
+  background: #ffe6e6 !important;
+  color: #f53f3f !important;
+}
+:root.purple :deep(.el-table th) {
+  background: #efe5ff !important;
+  color: #7b61ff !important;
+}
+:root.pink :deep(.el-table th) {
+  background: #ffe0ef !important;
+  color: #ff69b4 !important;
+}
+:root.cyan :deep(.el-table th) {
+  background: #ccfffc !important;
+  color: #00c9d6 !important;
+}
+:root.black :deep(.el-table th) {
+  background: #1a1a1a !important;
+  color: #fff !important;
 }

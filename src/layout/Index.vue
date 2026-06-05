@@ -9,15 +9,6 @@
     <!-- 顶部头部 -->
     <!-- 折叠/展开按钮 -->
     <el-header class="top-header">
-      <!-- <div>捕电科技</div>
-      <el-button
-        text
-        :icon="isCollapse ?  Expand : Fold"
-        @click="toggleCollapse"
-        style="margin-right: auto;font-size: 24px;"
-      />
-
-      <el-button @click="logout">退出登录</el-button> -->
       <Header @toggle="toggleCollapse" :collapse="isCollapse" />
     </el-header>
 
@@ -55,27 +46,23 @@
 </template>
 
 <script setup>
+import { ElMessage } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { ref, watch, computed } from 'vue'
-import SidebarItem from './SidebarItem.vue'
-import { getMenu } from '@/api/menu'
+import { Fold, Expand } from '@element-plus/icons-vue'
 import { mergeMenu, dynamicRouteToVueRoute } from '@/router/dynamicRouter'
 import { menuRoutes } from '@/router/defaultRoutes'
-import { ElMessage } from 'element-plus'
-import { Fold, Expand } from '@element-plus/icons-vue'
+import { getMenu } from '@/api/menu'
+import SidebarItem from './SidebarItem.vue'
 import Header from './header.vue'
-
 const route = useRoute()
 const router = useRouter()
-
 const menuList = ref([])
 const selectPath = ref('') // 修复拼写错误
-
 // 全屏判断（登录页）
 const isFullScreen = computed(() => {
   return route.path === '/login' || route.meta?.hidden === true
 })
-
 // 🔥 侧边栏折叠状态
 const isCollapse = ref(false)
 
@@ -85,7 +72,6 @@ const toggleCollapse = (value) => {
   // return
   isCollapse.value = value
 }
-
 // 加载菜单
 const loadMenu = async () => {
   const list = dynamicRouteToVueRoute(menuRoutes).filter((item) => {
@@ -104,17 +90,14 @@ const loadMenu = async () => {
     menuList.value = mergeMenu([], [])
   }
 }
-
 watch(
   () => route.path,
   () => loadMenu(),
   { immediate: true }
 )
-
-
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .full-page {
   width: 100vw;
   height: 100vh;

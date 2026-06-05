@@ -8,7 +8,7 @@ import Layout from '@/layout/Index.vue'
 // 基础路由 -- (menuRoutes-默认路由)
 const baseRoutes = [
   { path: '/',redirect: '/home',},
-  { path: '/login', component: () => import('@/views/login/index.vue'),  meta: { hidden: true }  },
+  { path: '/login', component: () => import('@/views/login/index.vue'),  meta: { hidden: true }},
   { path: '/', component: Layout, redirect: '/home', children: menuRoutes},
 ]
 const router = createRouter({

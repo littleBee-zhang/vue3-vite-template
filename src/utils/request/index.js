@@ -8,6 +8,7 @@ import {
     NO_LOADING_WHITE_LIST,
     MAX_CONCURRENT_REQUESTS
 } from './whitelist'
+import { addSign } from './sign'
 //========= 请求管理变量 =========
 const pendingRequests = new Map() //存储正在进行的请求（去重、取消）
 let activeRequests = 0 //当前活跃请求数
@@ -90,6 +91,8 @@ service.interceptors.request.use(
 
     //6.自动md5加密密码字段 （暂时没有完善）
     if (MD5_ENCRYPT_WHITE_LIST.includes(config.url) && config.data) {
+      // 签名
+      addSign(config)
       if (config.data.password) config.data.password = md5(config.data.password)
       if (config.data.oldPassword) config.data.oldPassword = md5(config.data.oldPassword)
       if (config.data.newPassword) config.data.newPassword = md5(config.data.newPassword)
@@ -129,7 +132,7 @@ service.interceptors.response.use(
     if (FULL_RESPONSE_WHITE_LIST.includes(url)) return res
     //常规接口校验code
     if (res.code !== 200) {
-      ElMessage.error(res.message || '接口请求失败')
+      ElMessage.error(res.message || '请求失败')
       return Promise.reject(res)
     }
     return res.data

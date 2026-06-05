@@ -1,10 +1,11 @@
+/**  全局注册自定义组件（直接使用即可）  **/ 
 import Former from './former/index.vue'
 import Table from './table/index.vue'
 import Card from './card/index.vue'
 import Dialog from './dialog/index.vue'
-// import Confirm from './dialog/confirm.js'
+import Confirm from './dialog/confirm.js'
 
-// Dialog.Confirm = Confirm
+Dialog.Confirm = Confirm // 
 // 组件注册
 const install = (app) => {
   app.component('Former', Former)

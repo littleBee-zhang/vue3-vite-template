@@ -12,11 +12,11 @@ export default defineConfig(({ mode  })=>{
   return {
     plugins: [
     vue(),
-    // 自动导入 API（ElMessage / ref 等）
+    // 自动导入 API（ElMessage / ref 等）无需导入可直接使用
     AutoImport({
       imports: [
         'vue',           
-      ],// 自动导入 ref reactive computed 等
+      ],// 自动导入 （ ref reactive computed 等 ） 无需导入可直接使用
       resolvers: [ElementPlusResolver()],
       dts: false,
     }),
