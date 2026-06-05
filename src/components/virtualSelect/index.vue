@@ -26,7 +26,7 @@ const props = defineProps({
     type: [String, Number, Object],
     default: null
   },
-  dataSource: { // 数据源（一次性传入所有数据）
+  options: { // 数据源（一次性传入所有数据）
     type: Array,
     required: true
   },
@@ -80,7 +80,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue','clear']);
 
 const selectedValue = ref(props.modelValue || (props.multiple ? [] : ''));
-const optionsList = ref([...props.labelList,...props.dataSource || []]);
+const optionsList = ref([...props.labelList,...props.options || []]);
 const loading = ref(false);
 
 const remoteMethod = (query)=>{
@@ -89,15 +89,15 @@ const remoteMethod = (query)=>{
     loading.value = true;
     setTimeout(()=>{
       loading.value = false;
-      optionsList.value = [...props.labelList,...props.dataSource];
+      optionsList.value = [...props.labelList,...props.options];
     },200);
   }else {
     // 有搜索词时，进行过滤
     loading.value = true;
     setTimeout(()=>{
       loading.value = false;
-      // 从原始 dataSource 中过滤，不要从 optionsList 过滤（防止累积错误）
-      optionsList.value = [...props.labelList,...(props?.dataSource || [])].filter((item)=>{
+      // 从原始 options 中过滤，不要从 optionsList 过滤（防止累积错误）
+      optionsList.value = [...props.labelList,...(props?.options || [])].filter((item)=>{
         const label = item[props.labelKey]?.toString().toLowerCase() || '';
         return label.includes(query.toLowerCase());
       });
@@ -105,9 +105,9 @@ const remoteMethod = (query)=>{
   }
 };
 
-// 监听外部传入的 dataSource 变化，重置状态
-watch(()=> props.dataSource,(newVal)=>{
-  optionsList.value = [...props.labelList,...newVal];
+// 监听外部传入的 options 变化，重置状态
+watch(()=> props.options,(newVal)=>{
+  optionsList.value = [...props.labelList,...(newVal || [])];
   // 如果当前有搜索词，可能需要重新过滤，这里简单处理：如有值就重置搜索
   if(selectedValue.value){
     remoteMethod('')
@@ -127,8 +127,8 @@ watch(selectedValue,(newVal)=>{
 
 // 这是解决弹窗场景问题的关键
 watch(()=> props.key,(newKey)=>{
-  // 重置 optionsList 为最新的 props.dataSource
-  optionsList.value = [...props.labelList,...props.dataSource];
+  // 重置 optionsList 为最新的 props.options
+  optionsList.value = [...props.labelList,...props.options];
   // 重置 selectedValue 为最新的 props.modelValue
   selectedValue.value = props.modelValue;
 },{immediate: true}); //immediate: true 确保组件创建时也执行一次

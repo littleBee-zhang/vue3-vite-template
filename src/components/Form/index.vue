@@ -90,9 +90,9 @@
 <script setup>
 import { ref, reactive, computed, watch, provide, h } from 'vue'
 import { ElForm, ElFormItem, ElRow, ElCol, ElButton, ElSpace } from 'element-plus'
-import regulars from './regulars'
-import elements from './elements'
-
+import regulars from './regulars.js'
+import elements from './elements.js'
+import { SelectTextList } from './placeholder.js'
 const props = defineProps({
   formProps: { type: Object, default: () => ({}) },
   form: { type: Object, default: undefined },
@@ -152,7 +152,7 @@ const buildRules = (item) => {
   if (item.required) {
     rules.push({
       required: true,
-      message: item.requiredMsg || `请${['Select','Picker','TreeSelect'].includes(item.view) ? '选择' : '输入'}${item.label}`,
+      message: item.requiredMsg || `请${SelectTextList.includes(item.view) ? '选择' : '输入'}${item.label}`,
       trigger: 'blur',
     })
   }
@@ -168,8 +168,6 @@ const resolveView = (item) => {
   if (!item.view) return 'ElInput'
   if (typeof item.view === 'string') return elements[item.view] || item.view
   return item.view
-  // if (typeof item.view === 'string') return elements[item.view] || item.view
-  // return item.view
 }
 
 provide('resolveView', resolveView)
@@ -190,7 +188,7 @@ const handleChangeBtn = async (item) => {
 }
 
 const buildPlaceholder = (item) =>
-  item.placeholder || `${['Select','Picker','TreeSelect','Cascader'].includes(item.view) ? '请选择' : '请输入'}${item.label || ''}`
+  item.placeholder || `${SelectTextList.includes(item.view) ? '请选择' : '请输入'}${item.label || ''}`
 
 const shouldHide = (item) => typeof item.visible === 'boolean' && !item.visible
 const shouldDisplayNone = (item) => typeof item.hide === 'boolean' && item.hide

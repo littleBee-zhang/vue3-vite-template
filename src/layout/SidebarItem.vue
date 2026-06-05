@@ -40,38 +40,3 @@ defineProps({
   }
 })
 </script>
-
-
-<!-- <template>
-  <el-menu-item v-if="!item.children || item.children.length === 0" :index="item.path">
-    <el-icon v-if="item.meta?.icon"><component :is="item.meta.icon" /></el-icon>
-    <span v-if="!collapse" slot="title">{{ item.meta.title }}</span>
-  </el-menu-item>
-
-  <el-sub-menu v-else :index="item.path">
-    <template #title>
-      <el-icon v-if="item.meta?.icon"><component :is="item.meta.icon" /></el-icon>
-   
-      <span v-if="!collapse">{{ item.meta.title }}</span>
-    </template>
-    <sidebar-item
-      v-for="child in item.children"
-      :key="child.path"
-      :item="child"
-      :collapse="collapse"
-    />
-  </el-sub-menu>
-</template>
-
-<script setup>
-defineProps({
-  item: {
-    type: Object,
-    required: true
-  },
-  collapse: { // 接收折叠状态
-    type: Boolean,
-    default: false
-  }
-})
-</script> -->

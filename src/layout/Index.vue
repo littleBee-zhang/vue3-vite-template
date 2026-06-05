@@ -68,8 +68,6 @@ const isCollapse = ref(false)
 
 // 切换折叠/展开
 const toggleCollapse = (value) => {
-  console.log(value);
-  // return
   isCollapse.value = value
 }
 // 加载菜单

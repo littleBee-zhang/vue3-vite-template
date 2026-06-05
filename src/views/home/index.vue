@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Card>
-      <Table
+    <MyCard>
+      <MyTable
         row-key="id"
         ref="tableRef"
         :columns="columns"
@@ -12,7 +12,7 @@
         @page-change="handlePageChange"
         @size-change="handleSizeChange"
       />
-    </Card>
+    </MyCard>
   </div>
 </template>
 <script setup>
@@ -117,9 +117,9 @@ const handleRefresh = ()=>{
 }
 // 
 onMounted(()=>{
-  getList().then(res=>{
-    console.log(res,'res');
-  })
+  // getList().then(res=>{
+  //   console.log(res,'res');
+  // })
   //   Dialog.Confirm({
   //   title: '提示',
   //   content: '确定要删除吗？',

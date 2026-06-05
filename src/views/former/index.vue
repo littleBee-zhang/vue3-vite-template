@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <Former
+    <Form
       ref="formRef"
       :dataSource="dataSource"
       :column="3"
@@ -15,7 +15,6 @@
 </template>
 
 <script setup>
-
 const formerRef = ref(null)
 const dataSource =  [
     {
@@ -37,20 +36,19 @@ const dataSource =  [
     {
       key: 'age',
       label: '年龄',
-      view: 'InputNumber',
+      view: 'Input',
       required: true,
     },
     {
       key: 'gender',
       label: '性别',
-      view: 'Select',
+      view: 'VirtualSelect',
       required: true,
       viewProps: {
         options: [
           { label: '男', value: 1 },
           { label: '女', value: 2 },
         ],
-        placeholder: '请选择性别',
         allowClear: true,
       },
     },

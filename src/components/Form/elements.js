@@ -37,3 +37,4 @@ const elements = {
 };
 
 export default elements;
+export const SelectTextList = ['Select','Picker','TreeSelect','Cascader','VirtualSelect']
