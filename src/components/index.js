@@ -5,13 +5,18 @@ import Card from './card/index.vue'
 import Dialog from './dialog/index.vue'
 // import Form from '@/components/Form/index.vue'
 import Form from './Form/index.vue'
-
+import Icon from './iocn/index.vue'
+// import SvgIcon from './SvgIcon.vue'
+// const install = app=>{
+//   app.component('SvgIcon',SvgIcon)
+// }
 Dialog.Confirm = Confirm // 
 // 组件注册
 const install = (app) => {
   app.component('Form', Form)
   app.component('Table', Table)
   app.component('Card', Card)
+  app.component('Icon', Icon)
   app.component('Dialog', Dialog)
   app.component('MyFormer', Form)
   app.component('MyTable', Table)
@@ -23,6 +28,7 @@ Form.install = install
 Table.install = install
 Card.install = install
 Dialog.install = install
+Icon.install = install
 
 export default { install }
 export { 

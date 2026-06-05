@@ -19,7 +19,8 @@ export function dynamicRouteToVueRoute(routeList) {
       meta: {
         title: item.menuName,
         icon: item.icon,
-        hidden: !!item.hidden
+        hidden: !!item.hidden,
+        svgName: item?.svgName,
       },
       children: [],
     }

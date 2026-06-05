@@ -1,6 +1,7 @@
 <template>
   <div>
     <MyCard>
+      <Icon name="jiaoseguanli" />
       <MyTable
         row-key="id"
         ref="tableRef"

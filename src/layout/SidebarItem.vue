@@ -6,7 +6,13 @@
       :index="item.path"
     >
       <template #title>
-        <el-icon><component :is="item?.icon || item?.meta?.icon" /></el-icon>
+        <el-icon>
+          <component v-if="item.meta.icon !== 'SvgIcon'" :is="item?.icon || item?.meta?.icon" />
+          <Icon 
+            v-else
+            :name="item.meta.svgName"
+          />
+        </el-icon>
         <span v-if="!collapse" >{{ item?.menuName || item?.name || item?.meta?.title}}</span>
       </template>
       <sidebar-item
@@ -22,7 +28,13 @@
       v-else-if="!item.hidden"
       :index="item.path"
     >
-      <el-icon><component :is="item?.icon || item?.meta?.icon" /></el-icon>
+      <el-icon>
+        <component v-if="item.meta.icon !== 'SvgIcon'" :is="item?.icon || item?.meta?.icon" />
+        <Icon 
+          v-else
+          :name="item.meta.svgName"
+        />
+      </el-icon>
       <span v-if="!collapse">{{ item?.menuName || item?.name || item?.meta?.title}}</span>
     </el-menu-item>
   </div>

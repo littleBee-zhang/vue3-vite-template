@@ -29,14 +29,16 @@ export const menuRoutes = [
         path: '/system/user',
         component: () => import('@/views/user/index.vue'),
         menuName: '用户管理' ,
-        icon: 'User',
+        icon: 'User', 
+        //jiaoseguanli
         hidden:false,
       },
       {
         path: '/system/role',
         component: () => import('@/views/user/role.vue'),
         menuName: '角色管理' ,
-        icon: 'Avatar',
+        icon: 'SvgIcon',
+        svgName:'jiaoseguanli',
         hidden:false,
       },
     ],
