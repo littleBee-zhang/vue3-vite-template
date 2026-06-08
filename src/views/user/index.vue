@@ -1,6 +1,9 @@
 <template>
   <div>
     <h1>index</h1>
-    <p>home</p>
+    <p>12</p>
   </div>
 </template>
+<script setup>
+
+</script>

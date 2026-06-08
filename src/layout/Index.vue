@@ -48,13 +48,15 @@
 <script setup>
 import { ElMessage } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import { Fold, Expand } from '@element-plus/icons-vue'
 import { mergeMenu, dynamicRouteToVueRoute } from '@/router/dynamicRouter'
 import { menuRoutes } from '@/router/defaultRoutes'
 import { getMenu } from '@/api/menu'
 import SidebarItem from './SidebarItem.vue'
 import Header from './header.vue'
+const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const menuList = ref([])
@@ -93,6 +95,18 @@ watch(
   () => loadMenu(),
   { immediate: true }
 )
+onMounted(async () => {
+  const token = localStorage.getItem('token')
+  if (!token) return
+
+  // 全局拉取常用字典
+  await store.dispatch('dict/getDict', 'status')
+  await store.dispatch('dict/getDict', 'sex')
+  await store.dispatch('dict/getDict', 'role')
+
+  // 拉取菜单
+  // await store.dispatch('menu/getMenu')
+})
 </script>
 
 <style lang="scss" scoped>

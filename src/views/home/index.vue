@@ -18,7 +18,15 @@
 </template>
 <script setup>
 // import { Dialog } from '@/components/index.js'
+import { useStore } from 'vuex'
+
 import { getList } from '@/api/index.js'
+import { FieldMapping , generateBigDict } from '@/utils'
+// console.log(FieldMapping(generateBigDict(100000),8888));
+const store = useStore()
+const dictList = store.state.dict
+// console.log(dictList);
+
 // 选中数据
 const selectedRows = ref([])
 const loading = ref(false)
@@ -117,20 +125,12 @@ const handleRefresh = ()=>{
   tableRef.value.refresh()
 }
 // 
-onMounted(()=>{
-  // getList().then(res=>{
-  //   console.log(res,'res');
-  // })
-  //   Dialog.Confirm({
-  //   title: '提示',
-  //   content: '确定要删除吗？',
-  //   type: 'warning',
-  //   onOk: () => {
-  //     console.log('确定')
-  //   },
-  //   onCancel: () => {
-  //     console.log('取消')
-  //   }
-  // })
+let statusList = []
+let sexList = []
+onMounted(async ()=>{
+  statusList = await store.dispatch('dict/getDict', 'status')
+  sexList = await store.dispatch('dict/getDict', 'sex')
+  console.log(statusList,sexList);
+  
 })
 </script>

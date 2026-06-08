@@ -80,4 +80,4 @@ export const formatRelativeTime = (date) => {
   }
 }
 
-export default formatDate
+export default FormatDate

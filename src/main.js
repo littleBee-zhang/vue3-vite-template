@@ -25,8 +25,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-app.use(router)
 app.use(store) // 挂载
+app.use(router)
 app.mount('#app')
 // ✨ 设置默认深色主题
 document.documentElement.className = ''

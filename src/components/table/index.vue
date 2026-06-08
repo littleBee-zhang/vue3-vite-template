@@ -158,12 +158,12 @@ watch(() => props.pagination, (val) => {
     pageSize.value = val.pageSize || 10
   }
 }, { deep: true })
-
+// 条数切换（外面默认改为第一页）
 const handleSizeChange = (size) => {
   pageSize.value = size
-  emit('size-change', size)
-  emit('page-change', currentPage.value, size)
+  emit('size-change', size,currentPage.value)
 }
+// 页数切换（返回当前页数和条数）
 const handleCurrentChange = (page) => {
   currentPage.value = page
   emit('page-change', page, pageSize.value)
