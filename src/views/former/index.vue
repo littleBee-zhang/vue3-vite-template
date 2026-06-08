@@ -1,61 +1,52 @@
 <template>
   <Card>
-    <Form
-      ref="formRef"
-      :dataSource="dataSource"
-      :column="3"
-      submit-text="提交"
-      reset-text="重置"
-      @submit="handleSubmit"
-      @reset="handleReset"
-      @fields-change="handleFieldsChange"
-      @values-change="handleValuesChange"
-    />
+    <Form ref="formRef" :dataSource="dataSource" :column="3" submit-text="提交" reset-text="重置" @submit="handleSubmit"
+      @reset="handleReset" @fields-change="handleFieldsChange" @values-change="handleValuesChange" />
   </Card>
 </template>
 
 <script setup>
 const formerRef = ref(null)
-const dataSource =  [
-    {
-      key: 'name',
-      label: '姓名',
-      view: 'Input',
-      required: true,
-      viewProps: {
-        append: () => h('span', { style: { color: 'red' } }, '*'),
-      },
+const dataSource = [
+  {
+    key: 'name',
+    label: '姓名',
+    view: 'Input',
+    required: true,
+    viewProps: {
+      append: () => h('span', { style: { color: 'red' } }, '*'),
     },
-    {
-      key: 'mobile',
-      label: '手机号',
-      view: 'Input',
-      rules: [{ type: 'mobile' }],
-      viewProps: { type: 'tel' },
+  },
+  {
+    key: 'mobile',
+    label: '手机号',
+    view: 'Input',
+    rules: [{ type: 'mobile' }],
+    viewProps: { type: 'tel' },
+  },
+  {
+    key: 'age',
+    label: '年龄',
+    view: 'Input',
+    required: true,
+  },
+  {
+    key: 'gender',
+    label: '性别',
+    view: 'VirtualSelect',
+    required: true,
+    viewProps: {
+      options: [
+        { label: '男', value: 1 },
+        { label: '女', value: 2 },
+      ],
+      allowClear: true,
     },
-    {
-      key: 'age',
-      label: '年龄',
-      view: 'Input',
-      required: true,
-    },
-    {
-      key: 'gender',
-      label: '性别',
-      view: 'VirtualSelect',
-      required: true,
-      viewProps: {
-        options: [
-          { label: '男', value: 1 },
-          { label: '女', value: 2 },
-        ],
-        allowClear: true,
-      },
-    },
-    { key: 'birthday', label: '生日', view: 'Picker' },
-    { key: 'city', label: '城市', view: 'Cascader' },
-    { key: 'remark', label: '备注', view: 'Input', viewProps: { type: 'textarea' } },
-  ]
+  },
+  { key: 'birthday', label: '生日', view: 'Picker' },
+  { key: 'city', label: '城市', view: 'Cascader' },
+  { key: 'remark', label: '备注', view: 'Input', viewProps: { type: 'textarea' } },
+]
 
 
 // 提交事件
@@ -77,7 +68,7 @@ const handleValuesChange = (changed, all) => {
 </script>
 
 <style lang="scss" scoped>
-.app{
+.app {
   width: 100%;
   height: 100%;
   display: flex;
@@ -85,7 +76,8 @@ const handleValuesChange = (changed, all) => {
   justify-content: center;
   background: #fff;
 }
-.app_form{
+
+.app_form {
   width: 50%;
 }
 </style>

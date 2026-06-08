@@ -2,17 +2,9 @@
   <div>
     <MyCard>
       <Icon name="jiaoseguanli" />
-      <MyTable
-        row-key="id"
-        ref="tableRef"
-        :columns="columns"
-        :data-source="dataList"
-        :loading="loading"
-        :pagination="pagination"
-        @selection-change="handleSelectionChange"
-        @page-change="handlePageChange"
-        @size-change="handleSizeChange"
-      />
+      <MyTable row-key="id" ref="tableRef" :columns="columns" :data-source="dataList" :loading="loading"
+        :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
+        @page-change="handlePageChange" @size-change="handleSizeChange" />
     </MyCard>
   </div>
 </template>
@@ -21,7 +13,7 @@
 import { useStore } from 'vuex'
 
 import { getList } from '@/api/index.js'
-import { FieldMapping , generateBigDict } from '@/utils'
+import { FieldMapping, generateBigDict } from '@/utils'
 // console.log(FieldMapping(generateBigDict(100000),8888));
 const store = useStore()
 const dictList = store.state.dict
@@ -33,35 +25,35 @@ const loading = ref(false)
 const tableRef = ref(null)
 // 分页配置
 const pagination = reactive({
-  current:1,
-  pageSize:10,
-  total:100
+  current: 1,
+  pageSize: 10,
+  total: 100
 })
 const columns = ref([
-  { title: '姓名', dataIndex: 'name', width:120 },
-  { title: '年龄', dataIndex: 'age', width:80, align:'center' },
-  { title: '地址', dataIndex: 'address', ellipsis:true },
-  { title: '地址', dataIndex: 'address', ellipsis:true },
+  { title: '姓名', dataIndex: 'name', width: 120 },
+  { title: '年龄', dataIndex: 'age', width: 80, align: 'center' },
+  { title: '地址', dataIndex: 'address', ellipsis: true },
+  { title: '地址', dataIndex: 'address', ellipsis: true },
   {
     title: '操作',
     dataIndex: 'action',
-    width:150,
-    align:'center',
-    fixed:'right',
-    actions:[
+    width: 150,
+    align: 'center',
+    fixed: 'right',
+    actions: [
       {
         key: 'edit',
         type: 'primary',
-        link:true,
+        link: true,
         content: '编辑',
         onClick: (row) => {
-          console.log(row,'编辑');
-          if(row?.id){
+          console.log(row, '编辑');
+          if (row?.id) {
 
           }
         }
       },
-      
+
       // 2. 删除（带确认）
       {
         key: 'delete',
@@ -69,7 +61,7 @@ const columns = ref([
         link: true,
         content: '删除',
         confirm: '确定要删除吗？',
-        onClick: (row) => {}
+        onClick: (row) => { }
       },
 
       // 3. 普通按钮
@@ -87,50 +79,49 @@ const columns = ref([
 ])
 // 数据源
 const dataList = ref([
-  { id:1, name:'张三', age:28, address:'北京市朝阳区xxx街道' },
-  { id:2, name:'李四', age:32, address:'上海市浦东新区xxx路' },
+  { id: 1, name: '张三', age: 28, address: '北京市朝阳区xxx街道' },
+  { id: 2, name: '李四', age: 32, address: '上海市浦东新区xxx路' },
 ])
 
 // 分页切换
-const handlePageChange = (page,size)=>{
+const handlePageChange = (page, size) => {
   pagination.current = page
   pagination.pageSize = size
 }
 // 条数切换
-const handleSizeChange = (size)=>{
+const handleSizeChange = (size) => {
   pagination.current = 1
   pagination.pageSize = size
 }
 // 多选事件
-const handleSelectionChange = (event)=>{
+const handleSelectionChange = (event) => {
   selectedRows.value = event
 }
 
 // 1.清空选中
-const handleClearSelection = ()=>{
+const handleClearSelection = () => {
   tableRef.value.clearSelection()
   ElMessage.success('已清除选中')
 }
 // 2.全选/取消全选
-const handleToggleAll = ()=>{
+const handleToggleAll = () => {
   tableRef.value.toggleAllSelection()
 }
 // 3.获取选中行
-const handleGetSelected = ()=>{
+const handleGetSelected = () => {
   const rows = tableRef.value.getSelectedRows()
   ElMessage.info(`共选中${rows.length}行`)
 }
 // 4.刷新表格
-const handleRefresh = ()=>{
+const handleRefresh = () => {
   tableRef.value.refresh()
 }
 // 
 let statusList = []
 let sexList = []
-onMounted(async ()=>{
+onMounted(async () => {
   statusList = await store.dispatch('dict/getDict', 'status')
   sexList = await store.dispatch('dict/getDict', 'sex')
-  console.log(statusList,sexList);
-  
+  // console.log(statusList,sexList);
 })
 </script>

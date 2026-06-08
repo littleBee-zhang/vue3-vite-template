@@ -18,8 +18,8 @@
 </template>
 
 <script setup>
-import { ref ,onMounted} from 'vue'
-import { useRouter,useRoute } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 const route = useRoute()
 const username = ref('admin')
@@ -36,8 +36,8 @@ const login = () => {
 }
 onMounted(async () => {
   // 登录页面 → 不加载菜单
-  
-    // console.log(route);
+
+  // console.log(route);
 
 })
 </script>

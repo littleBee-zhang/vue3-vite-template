@@ -8,18 +8,8 @@
     </slot>
 
     <!-- 弹窗 -->
-    <el-dialog
-        ref="dialogRef"
-        v-model="visible"
-        :title="title"
-        :width="dialogWidth"
-        :class="className"
-        :style="style"
-        destroy-on-close
-        @close="handleCancel"
-        @closed="afterClose"
-        z-index="ZIndex"
-    >
+    <el-dialog ref="dialogRef" v-model="visible" :title="title" :width="dialogWidth" :class="className" :style="style"
+      destroy-on-close @close="handleCancel" @closed="afterClose" z-index="ZIndex">
       <slot />
 
       <template #footer v-if="!customFooter">
@@ -49,21 +39,21 @@ const props = defineProps({
   style: { type: Object, default: () => ({}) },
   title: { type: String, default: '标题' },
   openText: { type: String, default: '打开' },
-  openButtonProps: { type: Object, default: () => ({link:true,type:'primary'}) },
-  onOpen: { type: Function, default: () => {} },
+  openButtonProps: { type: Object, default: () => ({ link: true, type: 'primary' }) },
+  onOpen: { type: Function, default: () => { } },
   okText: { type: String, default: '确定' },
   okButtonProps: { type: Object, default: () => ({}) },
-  onOk: { type: Function, default: () => {} },
+  onOk: { type: Function, default: () => { } },
   cancelText: { type: String, default: '取消' },
   cancelButtonProps: { type: Object, default: () => ({}) },
-  onCancel: { type: Function, default: () => {} },
-  afterClose: { type: Function, default: () => {} },
+  onCancel: { type: Function, default: () => { } },
+  afterClose: { type: Function, default: () => { } },
   footer: { type: [Function, Object, String] },
   width: { type: [String, Number], default: 'medium' },
-  ZIndex: { type: Number, default: 9999 } 
+  ZIndex: { type: Number, default: 9999 }
 })
 
-const emit = defineEmits(['ok', 'cancel','open'])
+const emit = defineEmits(['ok', 'cancel', 'open'])
 
 const dialogRef = ref(null)
 const visible = ref(false)
@@ -104,5 +94,4 @@ defineExpose({ open: handleOpen, close, visible })
 .dialog-footer {
   text-align: right;
 }
-
 </style>

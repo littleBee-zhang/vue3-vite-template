@@ -1,11 +1,9 @@
 <template>
-  <el-card 
-    :style="{
-        'min-height': minHeight,
-        'max-height': maxHeight,
-        'width':width
-    }"
-  >
+  <el-card :style="{
+    'min-height': minHeight,
+    'max-height': maxHeight,
+    'width': width
+  }">
     <!-- <template #default></template> -->
     <slot />
   </el-card>
@@ -28,7 +26,7 @@ const props = defineProps({
     type: [Number, String],
     default: '200px'
   },
-  width:{
+  width: {
     type: [Number, String],
     default: '100%'
   }
@@ -46,5 +44,4 @@ const emit = defineEmits([
 
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

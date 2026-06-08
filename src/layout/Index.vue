@@ -15,25 +15,11 @@
     <!-- 下部容器：侧边栏 + 内容 -->
     <el-container style="height: calc(100vh - 60px)">
       <!-- 左侧边栏 -->
-      <el-aside
-        :width="isCollapse ? '64px' : '220px'"
-        style="background-color: #fff; height: 100%; transition: width 0.3s"
-      >
-        <el-menu
-          router
-          :default-active="selectPath"
-          background-color="#fff"
-          text-color="#000"
-          active-text-color="#409EFF"
-          style="height: 100%; border-right: none"
-          :collapse="isCollapse"
-        >
-          <sidebar-item
-            v-for="item in menuList"
-            :key="item.path"
-            :item="item"
-            :collapse="isCollapse"
-          />
+      <el-aside :width="isCollapse ? '64px' : '220px'"
+        style="background-color: #fff; height: 100%; transition: width 0.3s">
+        <el-menu router :default-active="selectPath" background-color="#fff" text-color="#000"
+          active-text-color="#409EFF" style="height: 100%; border-right: none" :collapse="isCollapse">
+          <sidebar-item v-for="item in menuList" :key="item.path" :item="item" :collapse="isCollapse" />
         </el-menu>
       </el-aside>
 
@@ -114,6 +100,7 @@ onMounted(async () => {
   width: 100vw;
   height: 100vh;
 }
+
 .main-container {
   margin: 0;
   padding: 20px;
@@ -121,6 +108,7 @@ onMounted(async () => {
   overflow: auto;
   box-sizing: border-box;
 }
+
 .top-header {
   background: #fff;
   border-bottom: 1px solid #eee;

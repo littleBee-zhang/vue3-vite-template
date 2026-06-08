@@ -8,7 +8,6 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import MyComp from '@/components/index'
 // 阿里Icon图标
 import '@/assets/iconfont/iconfont.js'
-// 
 import App from './App.vue'
 import router from './router'
 import './style.css'// 引入主题样式

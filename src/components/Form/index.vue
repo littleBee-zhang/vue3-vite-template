@@ -1,58 +1,25 @@
 <template>
-  <el-form
-    ref="formRef"
-    :model="formData"
-    v-bind="formProps"
-    :class="className"
-    :style="style"
-    :label-width="`${labelCol}px`"
-    :label-position="labelPosition"
-    @submit.prevent="handleConfirm"
-    @fields-change="handleFieldsChange"
-    @values-change="handleValuesChange"
-  >
+  <el-form ref="formRef" :model="formData" v-bind="formProps" :class="className" :style="style"
+    :label-width="`${labelCol}px`" :label-position="labelPosition" @submit.prevent="handleConfirm"
+    @fields-change="handleFieldsChange" @values-change="handleValuesChange">
     <el-row :gutter="gutter">
       <template v-for="(item, index) in currentDataSource" :key="index">
-        <el-col
-          v-if="!shouldHide(item)"
-          :span="item?.span || colSpan"
-          :style="shouldDisplayNone(item) ? { display: 'none' } : {}"
-        >
-          <el-form-item
-            v-if="item.key"
-            :label="item.label"
-            :prop="item.key"
-            :rules="buildRules(item)"
-            v-bind="item?.props || {}"
-          >
-            <component
-              :is="resolveView(item)"
-              v-model="formData[item.key]"
-              v-bind="buildViewProps(item)"
-              :placeholder="buildPlaceholder(item)"
-              :clearable="item?.allowClear"
-              :style="{ width: item.width || '100%' }"
-              v-if="!item.onlyEntryNumber"
-            />
+        <el-col v-if="!shouldHide(item)" :span="item?.span || colSpan"
+          :style="shouldDisplayNone(item) ? { display: 'none' } : {}">
+          <el-form-item v-if="item.key" :label="item.label" :prop="item.key" :rules="buildRules(item)"
+            v-bind="item?.props || {}">
+            <component :is="resolveView(item)" v-model="formData[item.key]" v-bind="buildViewProps(item)"
+              :placeholder="buildPlaceholder(item)" :clearable="item?.allowClear"
+              :style="{ width: item.width || '100%' }" v-if="!item.onlyEntryNumber" />
 
-            <component
-              :is="resolveView(item)"
-              v-model="formData[item.key]"
-              v-bind="buildViewProps(item)"
-              :placeholder="buildPlaceholder(item)"
-              :style="{ width: item.width || '100%' }"
-              :clearable="item?.allowClear"
-              @input="handleOnlyNumber(item.key, $event)"
-              v-if="item.onlyEntryNumber"
-            />
+            <component :is="resolveView(item)" v-model="formData[item.key]" v-bind="buildViewProps(item)"
+              :placeholder="buildPlaceholder(item)" :style="{ width: item.width || '100%' }"
+              :clearable="item?.allowClear" @input="handleOnlyNumber(item.key, $event)" v-if="item.onlyEntryNumber" />
           </el-form-item>
 
           <el-form-item v-else-if="item.view === 'Button'" v-bind="item?.props || {}">
-            <el-button
-              v-bind="{ ...{ size: 'small' }, ...(item?.buttonProps || {}) }"
-              :type="item.buttonType || 'primary'"
-              @click.stop="handleChangeBtn(item)"
-            >
+            <el-button v-bind="{ ...{ size: 'small' }, ...(item?.buttonProps || {}) }"
+              :type="item.buttonType || 'primary'" @click.stop="handleChangeBtn(item)">
               {{ item.label || '按钮' }}
             </el-button>
           </el-form-item>
@@ -71,12 +38,7 @@
               <el-button v-if="resetText" v-bind="resetProps" @click="handleReset">
                 {{ resetText }}
               </el-button>
-              <el-button
-                v-if="submitText"
-                type="primary"
-                v-bind="submitProps"
-                @click="handleConfirm"
-              >
+              <el-button v-if="submitText" type="primary" v-bind="submitProps" @click="handleConfirm">
                 {{ submitText }}
               </el-button>
             </template>
@@ -101,21 +63,21 @@ const props = defineProps({
   wrapperCol: { type: Number, default: 16 },
   gutter: { type: Number, default: 8 },
   column: { type: Number, default: 3 },
-  onFieldsChange: { type: Function, default: () => {} },
-  onValuesChange: { type: Function, default: () => {} },
-  onSubmit: { type: Function, default: () => {} },
-  onConfirm: { type: Function, default: () => {} },
+  onFieldsChange: { type: Function, default: () => { } },
+  onValuesChange: { type: Function, default: () => { } },
+  onSubmit: { type: Function, default: () => { } },
+  onConfirm: { type: Function, default: () => { } },
   submitText: { type: String, default: '确定' },
   resetText: { type: String, default: '重置' },
-  submitProps: { type: Object, default: () => {} },
-  onReset: { type: Function, default: () => {} },
+  submitProps: { type: Object, default: () => { } },
+  onReset: { type: Function, default: () => { } },
   btnAlign: { type: String, default: 'center' },
   labelPosition: { type: String, default: 'right' },
-  resetProps: { type: Object, default: () => {} },
+  resetProps: { type: Object, default: () => { } },
   renderActions: { type: [Function, null], default: null },
   className: { type: String, default: '' },
-  style: { type: Object, default: () => {} },
-  BtnSpan:{type: Boolean, default: false}
+  style: { type: Object, default: () => { } },
+  BtnSpan: { type: Boolean, default: false }
 })
 
 const emit = defineEmits([
