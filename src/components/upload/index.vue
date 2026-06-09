@@ -32,26 +32,11 @@ import { ElMessage } from 'element-plus'
 import request from '@/request/http'
 
 const props = defineProps({
-    modelValue: {
-        type: String,
-        default: ''
-    },
-    multiple: {
-        type: Boolean,
-        default: false
-    },
-    max: {
-        type: Number,
-        default: 9
-    },
-    type: {
-        type: String,
-        default: 'image', // image / video / auto
-    },
-    maxSize: {
-        type: Number,
-        default: 20, // 单位：MB
-    }
+    modelValue: { type: String, default: '' },
+    multiple: { type: Boolean, default: false },
+    max: { type: Number, default: 9 },
+    type: { type: String, default: 'image', }, // image / video / auto
+    maxSize: { type: Number, default: 20, }// 单位：MB
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])

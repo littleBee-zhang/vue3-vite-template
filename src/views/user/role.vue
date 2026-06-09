@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>role</h1>
-    <p>role</p>
+    <Card>role</Card>
   </div>
 </template>
+<script setup></script>
+<style scoped lang="scss" ></style>

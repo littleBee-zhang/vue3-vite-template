@@ -20,7 +20,7 @@ const props = defineProps({
   },
   maxHeight: {
     type: [Number, String],
-    default: '480px'
+    default: '100%'
   },
   minHeight: {
     type: [Number, String],

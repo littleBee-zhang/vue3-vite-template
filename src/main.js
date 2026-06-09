@@ -10,9 +10,9 @@ import MyComp from '@/components/index'
 import '@/assets/iconfont/iconfont.js'
 import App from './App.vue'
 import router from './router'
-import './style.css'// 引入主题样式
-import './styles/theme.scss'
-// 
+import './style.css'
+import './styles/theme.scss' // 引入主题样式
+
 import store from './store' // 引入
 const app = createApp(App)
 

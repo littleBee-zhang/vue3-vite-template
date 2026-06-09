@@ -29,8 +29,7 @@ export const menuRoutes = [
         path: '/system/user',
         component: () => import('@/views/user/index.vue'),
         menuName: '用户管理' ,
-        icon: 'User', 
-        //jiaoseguanli
+        icon: 'User',
         hidden:false,
       },
       {

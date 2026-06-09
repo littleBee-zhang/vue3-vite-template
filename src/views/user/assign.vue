@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>assign</h1>
-    <p>assign</p>
+    <Card></Card>
   </div>
 </template>
+<script setup></script>
+<style scoped lang="scss" ></style>

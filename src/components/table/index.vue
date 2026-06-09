@@ -10,8 +10,8 @@
         :selectable="rowSelection.selectable" :reserve-selection="rowSelection.reserveSelection" />
 
       <!-- 索引列 -->
-      <el-table-column v-if="showIndex" type="index" :width="showIndexWidth || 72" :label="showIndexLabel || '#'"
-        :index="indexMethod" />
+      <el-table-column v-if="showIndex" :align="alignCenter || 'left'" type="index" :width="showIndexWidth || 72"
+        :label="showIndexLabel || '#'" :index="indexMethod" />
 
       <!-- 展开列 -->
       <el-table-column v-if="expandable" type="expand" :width="expandWidth || 50">
@@ -33,32 +33,39 @@
               <component v-if="typeof item.content === 'function'" :is="item.content(scope.row)" />
 
               <!-- 确认按钮 -->
-              <el-popconfirm v-else-if="item.confirm" :title="item.confirm"
-                @confirm="() => item.onClick?.(scope?.row || {})">
+              <el-popconfirm v-else-if="item.confirm" :title="item.confirm" @confirm="() => {
+                item.onClick?.(scope?.row || {})
+              }">
                 <template #reference>
-                  <el-button size="small" v-bind="item">
+                  <el-button size="small" v-bind="getBtnProps(item)" @click.stop>
                     {{ item.content }}
                   </el-button>
                 </template>
               </el-popconfirm>
 
               <!-- 普通按钮 -->
-              <el-button v-else size="small" v-bind="item" @click.stop="() => item.onClick?.(scope?.row || {})">
+              <el-button v-else size="small" v-bind="getBtnProps(item)" @click.stop="() => {
+                item.onClick?.(scope?.row || {})
+              }">
                 {{ item.content }}
               </el-button>
             </template>
           </el-space>
 
+          <!--  这里终于正确调用 render -->
+          <component v-if="col.render" :is="col.render(scope.row, scope)" />
           <!-- 单个 content -->
           <span v-else-if="col.content">
             <component v-if="typeof col.content === 'function'" :is="col.content(scope?.row || {})" />
             <span v-else>{{ scope.row[col.dataIndex] }}</span>
           </span>
-
           <!-- 普通字段 -->
-          <span v-else>
+          <span v-else="!col.render && !col.content && !col.actions">
             {{ scope.row[col.dataIndex] }}
           </span>
+          <!-- <span v-else>
+            {{ scope.row[col.dataIndex] }}
+          </span> -->
         </template>
       </el-table-column>
 
@@ -91,8 +98,12 @@ const props = defineProps({
   stripe: { type: Boolean, default: false },
   border: { type: Boolean, default: false },
   size: { type: String, default: '' },
-  height: [String, Number],
-  maxHeight: [String, Number],
+  alignCenter: { type: String, default: 'center' },
+  height: { type: [String, Number] },
+  maxHeight: {
+    type: [String, Number],
+    default: 600,
+  },
   headerCellStyle: Object,
   cellStyle: Object,
   defaultSort: Object,
@@ -131,7 +142,11 @@ const handleCurrentChange = (page) => {
 }
 const handleSelectionChange = (val) => emit('selection-change', val)
 const handleSortChange = (val) => emit('sort-change', val)
-
+// 循环内过滤item，剔除onClick
+const getBtnProps = (item) => {
+  const { onClick, ...rest } = item
+  return rest
+}
 defineExpose({
   tableRef,
   clearSelection: () => tableRef.value?.clearSelection(),

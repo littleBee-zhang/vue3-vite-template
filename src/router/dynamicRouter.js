@@ -15,7 +15,7 @@ export function dynamicRouteToVueRoute(routeList) {
       path: item.path,
       name: item.menuName,
       component: item.component === 'layout/Index'
-        ? Layout: () => import('@/views/' + item.component + '.vue'),
+        ? Layout: () => import(`@/views/` + item?.component + '.vue'),
       meta: {
         title: item.menuName,
         icon: item.icon,

@@ -3,13 +3,8 @@ import Confirm from './dialog/confirm.js'
 import Table from './table/index.vue'
 import Card from './card/index.vue'
 import Dialog from './dialog/index.vue'
-// import Form from '@/components/Form/index.vue'
 import Form from './Form/index.vue'
 import Icon from './iocn/index.vue'
-// import SvgIcon from './SvgIcon.vue'
-// const install = app=>{
-//   app.component('SvgIcon',SvgIcon)
-// }
 Dialog.Confirm = Confirm // 
 // 组件注册
 const install = (app) => {

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>list</h1>
-    <p>list</p>
+    <Card>list</Card>
   </div>
 </template>
+<script setup></script>
+<style scoped lang="scss" ></style>

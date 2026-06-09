@@ -1,9 +1,7 @@
 <template>
   <div>
-    <h1>index</h1>
-    <p>12</p>
+    <Card>user</Card>
   </div>
 </template>
-<script setup>
-
-</script>
+<script setup></script>
+<style scoped lang="scss" ></style>

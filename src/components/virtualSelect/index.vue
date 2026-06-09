@@ -9,58 +9,19 @@
 import { ref, watch } from 'vue';
 // --- Props ---
 const props = defineProps({
-  modelValue: { // v-model 的值
-    type: [String, Number, Object],
-    default: null
-  },
-  options: { // 数据源（一次性传入所有数据）
-    type: Array,
-    required: true
-  },
-  valueKey: { // 值的键名，如 'id'
-    type: String,
-    default: 'value'
-  },
-  labelKey: { // 标签的键名，如 'label'
-    type: String,
-    default: 'label'
-  },
-  placeholder: {
-    type: String,
-    default: '请选择'
-  },
-  placement: {
-    type: String,
-    default: 'bottom'
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  filterable: {
-    type: Boolean,
-    default: true
-  },
-  remote: {
-    type: Boolean,
-    default: true
-  },
-  clearable: {
-    type: Boolean,
-    default: true
-  },
-  itemHeight: { // 每个选项的高度(px)
-    type: Number,
-    default: 34 // Element Plus 默认选项高度
-  },
-  labelList: {
-    type: Array,
-    default: [{ value: null, label: '请选择', disabled: true }]
-  },
-  multiple: {
-    type: Boolean,
-    default: false
-  }
+  modelValue: { type: [String, Number, Object], default: null },// v-model 的值
+  options: { type: Array, required: true },// 数据源（一次性传入所有数据）
+  valueKey: { type: String, default: 'value' },// 值的键名，如 'id'
+  labelKey: { type: String, default: 'label' },// 标签的键名，如 'label'
+  placeholder: { type: String, default: '请选择' },
+  placement: { type: String, default: 'bottom' },
+  disabled: { type: Boolean, default: false },
+  filterable: { type: Boolean, default: true },
+  remote: { type: Boolean, default: true },
+  clearable: { type: Boolean, default: true },
+  itemHeight: { type: Number, default: 34 },  // 每个选项的高度(px) Element Plus 默认选项高度
+  labelList: { type: Array, default: [{ value: null, label: '请选择', disabled: true }] },
+  multiple: { type: Boolean, default: false }
 });
 
 // --- Emits ---
@@ -115,7 +76,7 @@ watch(selectedValue, (newVal) => {
 // 这是解决弹窗场景问题的关键
 watch(() => props.key, (newKey) => {
   // 重置 optionsList 为最新的 props.options
-  optionsList.value = [...props.labelList, ...props.options];
+  optionsList.value = [...props.labelList, ...(props?.options || [])];
   // 重置 selectedValue 为最新的 props.modelValue
   selectedValue.value = props.modelValue;
 }, { immediate: true }); //immediate: true 确保组件创建时也执行一次

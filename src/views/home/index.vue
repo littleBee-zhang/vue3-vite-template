@@ -9,15 +9,11 @@
   </div>
 </template>
 <script setup>
-// import { Dialog } from '@/components/index.js'
 import { useStore } from 'vuex'
-
 import { getList } from '@/api/index.js'
 import { FieldMapping, generateBigDict } from '@/utils'
-// console.log(FieldMapping(generateBigDict(100000),8888));
 const store = useStore()
 const dictList = store.state.dict
-// console.log(dictList);
 
 // 选中数据
 const selectedRows = ref([])
@@ -27,13 +23,23 @@ const tableRef = ref(null)
 const pagination = reactive({
   current: 1,
   pageSize: 10,
-  total: 100
+  total: 10
 })
 const columns = ref([
-  { title: '姓名', dataIndex: 'name', width: 120 },
-  { title: '年龄', dataIndex: 'age', width: 80, align: 'center' },
-  { title: '地址', dataIndex: 'address', ellipsis: true },
-  { title: '地址', dataIndex: 'address', ellipsis: true },
+  { title: '姓名', dataIndex: 'name', width: 120, align: 'center', },
+  {
+    title: '年龄', dataIndex: 'age', width: 80, align: 'center', render: (row) => {
+      return h('span', row.age)
+    }
+  },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+  { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
   {
     title: '操作',
     dataIndex: 'action',
@@ -48,9 +54,7 @@ const columns = ref([
         content: '编辑',
         onClick: (row) => {
           console.log(row, '编辑');
-          if (row?.id) {
-
-          }
+          if (row?.id) { }
         }
       },
 
@@ -70,18 +74,25 @@ const columns = ref([
         type: 'success',
         link: true,
         content: '查看',
-        onClick: (row) => {
-
-        }
+        onClick: (row) => { }
       }
     ]
   },
 ])
+const generateList = (num = 10, key = '状态') => {
+  const list = []
+  for (let i = 0; i < num; i++) {
+    list.push({
+      id: i + 1,
+      name: `${key}-${i + 1}`,
+      age: i + 1,
+      address: `地区xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx${i + 1}xx街道`
+    })
+  }
+  return list
+}
 // 数据源
-const dataList = ref([
-  { id: 1, name: '张三', age: 28, address: '北京市朝阳区xxx街道' },
-  { id: 2, name: '李四', age: 32, address: '上海市浦东新区xxx路' },
-])
+const dataList = ref(generateList())
 
 // 分页切换
 const handlePageChange = (page, size) => {
@@ -125,3 +136,4 @@ onMounted(async () => {
   // console.log(statusList,sexList);
 })
 </script>
+<style lang="scss" scoped></style>
