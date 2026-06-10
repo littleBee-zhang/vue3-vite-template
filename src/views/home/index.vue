@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <MyCard>
+  <div class="home">
+    <Card>
       <Icon name="jiaoseguanli" />
-      <MyTable row-key="id" ref="tableRef" :columns="columns" :data-source="dataList" :loading="loading"
+      <Table row-key="id" ref="tableRef" :columns="columns" :data-source="dataList" :loading="loading"
         :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
         @page-change="handlePageChange" @size-change="handleSizeChange" />
-    </MyCard>
+    </Card>
   </div>
 </template>
 <script setup>
@@ -136,4 +136,6 @@ onMounted(async () => {
   // console.log(statusList,sexList);
 })
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  @use './index.module.scss';
+</style>

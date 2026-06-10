@@ -29,8 +29,48 @@
     </el-dialog>
   </div>
 </template>
-
 <script setup>
+import { ref } from 'vue'
+import models from './models.js'
+
+// 必须留在 vue
+const props = defineProps({
+  className: { type: String, default: '' },
+  style: { type: Object, default: () => ({}) },
+  title: { type: String, default: '标题' },
+  openText: { type: String, default: '打开' },
+  openButtonProps: { type: Object, default: () => ({ link: true, type: 'primary' }) },
+  onOpen: { type: Function, default: () => { } },
+  okText: { type: String, default: '确定' },
+  okButtonProps: { type: Object, default: () => ({}) },
+  onOk: { type: Function, default: () => { } },
+  cancelText: { type: String, default: '取消' },
+  cancelButtonProps: { type: Object, default: () => ({}) },
+  onCancel: { type: Function, default: () => { } },
+  afterClose: { type: Function, default: () => { } },
+  footer: { type: [Function, Object, String] },
+  width: { type: [String, Number], default: 'medium' },
+  ZIndex: { type: Number, default: 9999 }
+})
+
+const emit = defineEmits(['ok', 'cancel', 'open'])
+const dialogRef = ref(null)
+
+// 逻辑全部抽离
+const {
+  visible,
+  close,
+  dialogWidth,
+  customFooter,
+  handleOpen,
+  handleOk,
+  handleCancel
+} = models(props, emit)
+
+// 暴露方法
+defineExpose({ open: handleOpen, close, visible })
+</script>
+<!-- <script setup>
 import { ref, computed } from 'vue'
 import { ElButton, ElDialog } from 'element-plus'
 
@@ -88,7 +128,7 @@ const handleCancel = () => {
 }
 // 暴露实例
 defineExpose({ open: handleOpen, close, visible })
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 .dialog-footer {

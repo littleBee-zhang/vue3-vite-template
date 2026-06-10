@@ -79,8 +79,58 @@
     </div>
   </div>
 </template>
-
 <script setup>
+import { ref } from 'vue'
+import models from './models.js'
+
+const props = defineProps({
+  columns: { type: Array, required: true },
+  dataSource: { type: Array, default: () => [] },
+  rowKey: { type: String, default: 'id' },
+  loading: { type: Boolean, default: false },
+  pagination: { type: [Object, Boolean], default: true },
+  rowSelection: { type: [Object, Boolean], default: false },
+  showIndex: { type: Boolean, default: false },
+  showIndexLabel: { type: String, default: "#" },
+  showIndexWidth: { type: Number, default: 72 },
+  expandable: { type: Boolean, default: false },
+  spaceSize: { type: Number, default: 8 },
+  stripe: { type: Boolean, default: false },
+  border: { type: Boolean, default: false },
+  size: { type: String, default: '' },
+  alignCenter: { type: String, default: 'center' },
+  height: { type: [String, Number] },
+  maxHeight: { type: [String, Number], default: 600, },
+  headerCellStyle: Object,
+  cellStyle: Object,
+  defaultSort: Object,
+})
+
+const emit = defineEmits(['selection-change', 'sort-change', 'page-change', 'size-change'])
+
+const tableRef = ref(null)
+
+const {
+  currentPage,
+  pageSize,
+  total,
+  indexMethod,
+  handleSizeChange,
+  handleCurrentChange,
+  handleSelectionChange,
+  handleSortChange,
+  getBtnProps
+} = models(props, emit, tableRef)
+
+// 暴露方法
+defineExpose({
+  tableRef,
+  clearSelection: () => tableRef.value?.clearSelection(),
+  getSelectedRows: () => tableRef.value?.getSelectionRows(),
+  clearSort: () => tableRef.value?.clearSort(),
+})
+</script>
+<!-- <script setup>
 import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
@@ -100,10 +150,7 @@ const props = defineProps({
   size: { type: String, default: '' },
   alignCenter: { type: String, default: 'center' },
   height: { type: [String, Number] },
-  maxHeight: {
-    type: [String, Number],
-    default: 600,
-  },
+  maxHeight: { type: [String, Number], default: 600, },
   headerCellStyle: Object,
   cellStyle: Object,
   defaultSort: Object,
@@ -154,26 +201,8 @@ defineExpose({
   // 清除排序
   clearSort: () => tableRef.value?.clearSort(),
 })
-</script>
+</script> -->
 
 <style scss lang="scss">
-.table-card {
-  background: #fff;
-  padding: 12px;
-
-  :deep(.el-card__body) {
-    padding: 24px;
-  }
-}
-
-.table-card .el-table__header th.el-table__cell {
-  background: #f5f7fa !important;
-  color: #515a6e !important;
-}
-
-.pagination-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
-}
+@use './index.module.scss';
 </style>

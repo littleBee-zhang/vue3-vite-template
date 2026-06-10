@@ -7,7 +7,6 @@
   <!-- 主布局：顶部头部 + 左下侧边栏 + 右下内容 -->
   <el-container v-else style="height: 100vh">
     <!-- 顶部头部 -->
-    <!-- 折叠/展开按钮 -->
     <el-header class="top-header">
       <Header @toggle="toggleCollapse" :collapse="isCollapse" />
     </el-header>

@@ -5,8 +5,22 @@
             fit="cover" class="thumb-img" />
     </div>
 </template>
-
 <script setup>
+import models from './models.js'
+
+// 必须留在 vue
+const props = defineProps({
+    src: { type: [String, Array], required: true },
+    width: { type: String, default: '100px' },
+    height: { type: String, default: '100px' },
+    radius: { type: String, default: '4px' },
+    gap: { type: String, default: '8px' }
+})
+
+// 调用 hook
+const { imgArr, wrapStyle, imgStyle } = models(props)
+</script>
+<!-- <script setup>
 import { computed } from 'vue'
 
 // 入参
@@ -53,7 +67,7 @@ const imgStyle = computed(() => ({
     height: props.height,
     borderRadius: props.radius
 }))
-</script>
+</script> -->
 
 <style scoped>
 .thumb-img {

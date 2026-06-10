@@ -1,0 +1,64 @@
+.pagination-virtual-select-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.select-dropdown {
+    width: 100%;
+}
+
+.scroll-container {
+    height: 200px;
+    /* 可见区域高度 */
+    overflow-y: auto;
+    position: relative;
+}
+
+.scroll-spacer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+}
+
+.scroll-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    will-change: transform;
+}
+
+.scroll-item {
+    height: v-bind(itemHeight + 'px');
+    line-height: v-bind(itemHeight + 'px');
+    padding: 0 15px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.scroll-item:hover {
+    background-color: #f5f7fa;
+}
+
+.scroll-item.is-selected {
+    background-color: #ecf5ff;
+    color: #409eff;
+}
+
+.loading-indicator,
+.no-more-indicator {
+    height: v-bind(itemHeight + 'px');
+    line-height: v-bind(itemHeight + 'px');
+    text-align: center;
+    color: #909399;
+    font-size: 12px;
+}
+
+.selected-label-display {
+    margin-top: 10px;
+    color: #606266;
+    font-size: 14px;
+}

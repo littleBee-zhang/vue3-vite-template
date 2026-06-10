@@ -78,15 +78,28 @@ service.interceptors.request.use(
     // 外部传入的 headers → 合并到默认里，不会覆盖默认
     if (config.headers) {
       config.headers = {
-        ...config.headers,       // 外部传入
         ...service.defaults.headers.common, // 默认基础头
-        ...service.defaults.headers.post
+        ...service.defaults.headers.post,
+        ...config.headers,       // 外部传入（优先使用）
       }
     }
     //5.token携带逻辑
     if (!NO_TOKEN_WHITE_LIST.includes(config.url)) {
       const token = localStorage.getItem('token')
       if (token) config.headers['X-Access-Token'] = `${token}`
+    }
+    // ====================== 上传文件处理 ======================
+    if (config.isUploadFile) {
+      // 上传文件：使用 FormData 格式
+      config.headers['Content-Type'] = 'multipart/form-data'
+      // 如果 data 不是 FormData，自动转换成 FormData
+      if (!(config.data instanceof FormData)) {
+        const formData = new FormData()
+        Object.keys(config.data).forEach(key => {
+          formData.append(key, config.data[key])
+        })
+        config.data = formData
+      }
     }
 
     //6.自动md5加密密码字段 （暂时没有完善）

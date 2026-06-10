@@ -24,12 +24,42 @@
         </el-dialog>
     </div>
 </template>
-
 <script setup>
+import { ref } from 'vue'
+import { Plus } from '@element-plus/icons-vue'
+import models from './models.js'
+
+// 👇 必须留在 vue
+const props = defineProps({
+    modelValue: { type: String, default: '' },
+    multiple: { type: Boolean, default: false },
+    max: { type: Number, default: 9 },
+    type: { type: String, default: 'image' },
+    maxSize: { type: Number, default: 20 },
+})
+
+const emit = defineEmits(['update:modelValue', 'change'])
+
+// 👇 所有逻辑丢进 hook
+const {
+    fileList,
+    dialogVisible,
+    previewUrl,
+    isVideoPreview,
+    multipleComputed,
+    limit,
+    listType,
+    accept,
+    doUpload,
+    handleRemove,
+    handlePreview
+} = models(props, emit)
+</script>
+<!-- <script setup>
 import { ref, computed, watch, nextTick } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import request from '@/request/http'
+import request from '@/utils/request'
 
 const props = defineProps({
     modelValue: { type: String, default: '' },
@@ -148,6 +178,7 @@ const doUpload = async (options) => {
             url: '/sys/common/upload',
             method: 'post',
             data: formData,
+            isUploadFile: true, // 关键标记
             headers: { 'Content-Type': 'multipart/form-data' }
         })
 
@@ -191,21 +222,8 @@ const handlePreview = (file) => {
     isVideoPreview.value = videoReg.test(file.url) || props.type === 'video'
     dialogVisible.value = true
 }
-</script>
+</script> -->
 
-<style scoped>
-.gy-upload {
-    display: inline-block;
-}
-
-.u-image {
-    max-width: 100%;
-    display: block;
-    margin: 0 auto;
-}
-
-.u-video {
-    width: 100%;
-    display: block;
-}
+<style lang="scss" scoped>
+@use './index.module.scss';
 </style>

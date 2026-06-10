@@ -10,21 +10,21 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, h } from 'vue'
+import models from './models'
 
 // Props配置
 const props = defineProps({
-  maxHeight: {
-    type: [Number, String],
-    default: null
-  },
+  // maxHeight: {
+  //   type: [Number, String],
+  //   default: null
+  // },
   maxHeight: {
     type: [Number, String],
     default: '100%'
   },
   minHeight: {
     type: [Number, String],
-    default: '200px'
+    default: '400px'
   },
   width: {
     type: [Number, String],
@@ -32,16 +32,8 @@ const props = defineProps({
   }
 })
 
-// 自定义事件
-const emit = defineEmits([
-  'update:currentPage',
-  'update:pageSize',
-  'selection-change',
-  'sort-change',
-  'page-change',
-  'size-change'
-])
-
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@use './index.module.scss'
+</style>

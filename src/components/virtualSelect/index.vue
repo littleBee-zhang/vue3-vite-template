@@ -7,6 +7,7 @@
 
 <script setup>
 import { ref, watch } from 'vue';
+import models from './models.js'
 // --- Props ---
 const props = defineProps({
   modelValue: { type: [String, Number, Object], default: null },// v-model 的值
@@ -26,125 +27,63 @@ const props = defineProps({
 
 // --- Emits ---
 const emit = defineEmits(['update:modelValue', 'clear']);
+// 把 props 和 emit 传给 hooks
+const { selectedValue, optionsList, loading, remoteMethod } = models(props, emit)
+// const selectedValue = ref(props.modelValue || (props.multiple ? [] : ''));
+// const optionsList = ref([...props.labelList, ...props.options || []]);
+// const loading = ref(false);
 
-const selectedValue = ref(props.modelValue || (props.multiple ? [] : ''));
-const optionsList = ref([...props.labelList, ...props.options || []]);
-const loading = ref(false);
+// const remoteMethod = (query) => {
+//   if (query === "") {
+//     // 清空搜索时，重置为原始数据
+//     loading.value = true;
+//     setTimeout(() => {
+//       loading.value = false;
+//       optionsList.value = [...props.labelList, ...props.options];
+//     }, 200);
+//   } else {
+//     // 有搜索词时，进行过滤
+//     loading.value = true;
+//     setTimeout(() => {
+//       loading.value = false;
+//       // 从原始 options 中过滤，不要从 optionsList 过滤（防止累积错误）
+//       optionsList.value = [...props.labelList, ...(props?.options || [])].filter((item) => {
+//         const label = item[props.labelKey]?.toString().toLowerCase() || '';
+//         return label.includes(query.toLowerCase());
+//       });
+//     }, 200);
+//   }
+// };
 
-const remoteMethod = (query) => {
-  if (query === "") {
-    // 清空搜索时，重置为原始数据
-    loading.value = true;
-    setTimeout(() => {
-      loading.value = false;
-      optionsList.value = [...props.labelList, ...props.options];
-    }, 200);
-  } else {
-    // 有搜索词时，进行过滤
-    loading.value = true;
-    setTimeout(() => {
-      loading.value = false;
-      // 从原始 options 中过滤，不要从 optionsList 过滤（防止累积错误）
-      optionsList.value = [...props.labelList, ...(props?.options || [])].filter((item) => {
-        const label = item[props.labelKey]?.toString().toLowerCase() || '';
-        return label.includes(query.toLowerCase());
-      });
-    }, 200);
-  }
-};
+// // 监听外部传入的 options 变化，重置状态
+// watch(() => props.options, (newVal) => {
+//   optionsList.value = [...props.labelList, ...(newVal || [])];
+//   // 如果当前有搜索词，可能需要重新过滤，这里简单处理：如有值就重置搜索
+//   if (selectedValue.value) {
+//     remoteMethod('')
+//     // 可选：这里可以触发一次 remoteMethod() 来重置
+//   }
+// }, { immediate: true });
 
-// 监听外部传入的 options 变化，重置状态
-watch(() => props.options, (newVal) => {
-  optionsList.value = [...props.labelList, ...(newVal || [])];
-  // 如果当前有搜索词，可能需要重新过滤，这里简单处理：如有值就重置搜索
-  if (selectedValue.value) {
-    remoteMethod('')
-    // 可选：这里可以触发一次 remoteMethod() 来重置
-  }
-}, { immediate: true });
+// // 当父组件 modelValue 变化时，同步内部值
+// watch(() => props.modelValue, (newVal) => {
+//   selectedValue.value = newVal;
+// }, { immediate: true });
 
-// 当父组件 modelValue 变化时，同步内部值
-watch(() => props.modelValue, (newVal) => {
-  selectedValue.value = newVal;
-}, { immediate: true });
+// // 当内部选中值变化时，通知父组件
+// watch(selectedValue, (newVal) => {
+//   emit('update:modelValue', newVal);
+// });
 
-// 当内部选中值变化时，通知父组件
-watch(selectedValue, (newVal) => {
-  emit('update:modelValue', newVal);
-});
-
-// 这是解决弹窗场景问题的关键
-watch(() => props.key, (newKey) => {
-  // 重置 optionsList 为最新的 props.options
-  optionsList.value = [...props.labelList, ...(props?.options || [])];
-  // 重置 selectedValue 为最新的 props.modelValue
-  selectedValue.value = props.modelValue;
-}, { immediate: true }); //immediate: true 确保组件创建时也执行一次
+// // 这是解决弹窗场景问题的关键
+// watch(() => props.key, (newKey) => {
+//   // 重置 optionsList 为最新的 props.options
+//   optionsList.value = [...props.labelList, ...(props?.options || [])];
+//   // 重置 selectedValue 为最新的 props.modelValue
+//   selectedValue.value = props.modelValue;
+// }, { immediate: true }); //immediate: true 确保组件创建时也执行一次
 </script>
 
-<style scoped>
-.pagination-virtual-select-container {
-  width: 100%;
-  max-width: 400px;
-}
-
-.select-dropdown {
-  width: 100%;
-}
-
-.scroll-container {
-  height: 200px;
-  /* 可见区域高度 */
-  overflow-y: auto;
-  position: relative;
-}
-
-.scroll-spacer {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1px;
-}
-
-.scroll-content {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  will-change: transform;
-}
-
-.scroll-item {
-  height: v-bind(itemHeight + 'px');
-  line-height: v-bind(itemHeight + 'px');
-  padding: 0 15px;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.scroll-item:hover {
-  background-color: #f5f7fa;
-}
-
-.scroll-item.is-selected {
-  background-color: #ecf5ff;
-  color: #409eff;
-}
-
-.loading-indicator,
-.no-more-indicator {
-  height: v-bind(itemHeight + 'px');
-  line-height: v-bind(itemHeight + 'px');
-  text-align: center;
-  color: #909399;
-  font-size: 12px;
-}
-
-.selected-label-display {
-  margin-top: 10px;
-  color: #606266;
-  font-size: 14px;
-}
+<style lang="scss" scoped>
+@use './index.module.scss';
 </style>

@@ -48,8 +48,79 @@
     </el-row>
   </el-form>
 </template>
-
 <script setup>
+import { ref, reactive, computed, watch, provide } from 'vue'
+import models from './models.js'
+import regulars from './regulars.js'
+import elements from './elements.js'
+import { SelectTextList } from './placeholder.js'
+
+
+const props = defineProps({
+  formProps: { type: Object, default: () => ({}) },
+  form: { type: Object, default: undefined },
+  dataSource: { type: [Array, Function], default: () => [] },
+  labelCol: { type: Number, default: 60 },
+  wrapperCol: { type: Number, default: 16 },
+  gutter: { type: Number, default: 8 },
+  column: { type: Number, default: 3 },
+  onFieldsChange: { type: Function, default: () => {} },
+  onValuesChange: { type: Function, default: () => {} },
+  onSubmit: { type: Function, default: () => {} },
+  onConfirm: { type: Function, default: () => {} },
+  submitText: { type: String, default: '确定' },
+  resetText: { type: String, default: '重置' },
+  submitProps: { type: Object, default: () => {} },
+  onReset: { type: Function, default: () => {} },
+  btnAlign: { type: String, default: 'center' },
+  labelPosition: { type: String, default: 'right' },
+  resetProps: { type: Object, default: () => {} },
+  renderActions: { type: [Function, null], default: null },
+  className: { type: String, default: '' },
+  style: { type: Object, default: () => {} },
+  BtnSpan: { type: Boolean, default: false }
+})
+
+const emit = defineEmits([
+  'fields-change',
+  'values-change',
+  'submit',
+  'reset',
+  'confirm',
+])
+
+const formRef = ref(null)
+const formData = reactive({ ...(props?.form || {}) })
+
+const {
+  colSpan,
+  currentDataSource,
+  buildRules,
+  resolveView,
+  buildViewProps,
+  handleChangeBtn,
+  buildPlaceholder,
+  shouldHide,
+  shouldDisplayNone,
+  handleOnlyNumber,
+  handleFieldsChange,
+  handleValuesChange,
+  handleConfirm,
+  handleReset
+} = models(props, emit, formRef, formData, regulars, elements, SelectTextList)
+
+
+provide('resolveView', resolveView)
+
+defineExpose({
+  form: formRef,
+  formData,
+  validate: () => formRef.value?.validate(),
+  confirm: handleConfirm,
+  reset: handleReset,
+})
+</script>
+<!-- <script setup>
 import { ref, reactive, computed, watch, provide, h } from 'vue'
 import { ElForm, ElFormItem, ElRow, ElCol, ElButton, ElSpace } from 'element-plus'
 import regulars from './regulars.js'
@@ -198,11 +269,8 @@ defineExpose({
   confirm: handleConfirm,
   reset: handleReset,
 })
-</script>
+</script> -->
 
 <style lang="scss" scoped>
-.former-actions {
-  margin-top: 16px;
-  text-align: center;
-}
+@use './index.module.scss';
 </style>

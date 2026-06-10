@@ -4,6 +4,7 @@
   </svg>
 </template>
 <script setup>
+import models from './models';
 const props = defineProps({
   name: { type: String, default: '' },
   size: { type: [Number, String], default: 18 },
@@ -13,10 +14,5 @@ const props = defineProps({
 })
 </script>
 <style scoped lang="scss">
-.svg-icon {
-  width: 1em;
-  height: 1em;
-  vertical-align: -0.15em;
-  fill: currentColor;
-}
+@use './index.module.scss';
 </style>
