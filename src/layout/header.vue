@@ -55,6 +55,7 @@ import { reactive, computed, inject } from 'vue';
 import { Fold, Expand, ArrowDown, HomeFilled } from '@element-plus/icons-vue'
 import socket from '@/utils/socket'
 import { LOGO_PNG } from '@/assets'
+import { Logout } from '@/api/login'
 const router = useRouter()
 const store = useStore()
 const route = useRoute()
@@ -91,12 +92,17 @@ const state = reactive({
   memberName: '测试用户'
 })
 // 退出
-const logout = () => {
-  localStorage.removeItem('token')
-  store.dispatch('dict/clearDict')
-  store.dispatch('menu/clearMenu')
-  ElMessage.success('退出成功')
-  setTimeout(() => { router.push('/login') }, 1000)
+const logout = async  () => {
+  try {
+    const res = await Logout()
+    localStorage.removeItem('token')
+    store.dispatch('dict/clearDict')
+    store.dispatch('menu/clearMenu')
+    ElMessage.success('退出成功')
+    router.push('/login')
+  } catch (error) {
+    
+  }
 }
 const goHome = () => {
   router.push('/home')

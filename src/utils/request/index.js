@@ -2,12 +2,12 @@ import axios from 'axios'
 import md5 from 'md5'
 import { ElLoading } from 'element-plus'
 import { BASE_URL } from '@/constant/address.js'
-import { 
-    FULL_RESPONSE_WHITE_LIST,
-    NO_TOKEN_WHITE_LIST,
-    MD5_ENCRYPT_WHITE_LIST,
-    NO_LOADING_WHITE_LIST,
-    MAX_CONCURRENT_REQUESTS
+import {
+  FULL_RESPONSE_WHITE_LIST,
+  NO_TOKEN_WHITE_LIST,
+  MD5_ENCRYPT_WHITE_LIST,
+  NO_LOADING_WHITE_LIST,
+  MAX_CONCURRENT_REQUESTS
 } from './whitelist'
 import { addSign } from './sign'
 //========= 请求管理变量 =========
@@ -33,7 +33,7 @@ const removePendingRequest = (config) => {
 
 //========= 创建axios实例 =========
 const service = axios.create({
-  baseURL: BASE_URL,
+  baseURL: import.meta.env.DEV ? '' : BASE_URL,
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
@@ -70,10 +70,10 @@ service.interceptors.request.use(
       }
       // 增加：超时10秒强制关闭loading，防止卡死
       if (loadingTimer) clearTimeout(loadingTimer)
-        loadingTimer = setTimeout(() => {
-          closeLoading()
-          console.warn('请求超时，已自动关闭加载')
-        }, 10000) // 10秒超时
+      loadingTimer = setTimeout(() => {
+        closeLoading()
+        console.warn('请求超时，已自动关闭加载')
+      }, 10000) // 10秒超时
     }
     // ====================== 核心：合并 headers（不替换）======================
     // 外部传入的 headers → 合并到默认里，不会覆盖默认
@@ -149,7 +149,8 @@ service.interceptors.response.use(
       ElMessage.error(res.message || '请求失败')
       return Promise.reject(res)
     }
-    return res.data
+    // return res.data
+    return res
   },
   (error) => {
     //异常也要清理队列+关闭loading
@@ -173,16 +174,34 @@ service.interceptors.response.use(
   }
 )
 
-// 暴露全局方法：路由切换取消全部请求
-service.cancelAllRequest = () => {
-  for (const cancel of pendingRequests.values()) cancel('页面跳转，取消所有请求')
-  pendingRequests.clear()
-  activeRequests = 0
-  loadingCount = 0
+// // 暴露全局方法：路由切换取消全部请求
+// service.cancelAllRequest = () => {
+//   for (const cancel of pendingRequests.values()) cancel('页面跳转，取消所有请求')
+//   pendingRequests.clear()
+//   activeRequests = 0
+//   loadingCount = 0
+//   if (loadingInstance) {
+//     loadingInstance.close()
+//     loadingInstance = null
+//   }
+// }
+// 
+function cancelAllRequest() {
+  for (const cancel of pendingRequests.values()) {
+    try {
+      cancel('页面跳转，取消请求');
+    } catch (e) {
+      console.warn('单个请求取消异常', e);
+    }
+  }
+  pendingRequests.clear();
+  activeRequests = 0;
+  loadingCount = 0;
   if (loadingInstance) {
-    loadingInstance.close()
-    loadingInstance = null
+    loadingInstance.close();
+    loadingInstance = null;
   }
 }
-
+// 强制绑定this指向axios实例service
+service.cancelAllRequest = cancelAllRequest.bind(service);
 export default service

@@ -21,18 +21,32 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { Login } from '@/api/login'
 const route = useRoute()
 const username = ref('admin')
 const password = ref('123456')
 const router = useRouter()
 
-const login = () => {
-  localStorage.setItem('token', 'demo-token')
-  ElMessage.success('登录成功')
-  // 强制跳转
-  setTimeout(() => {
-    router.push('/home')
-  }, 300)
+const login = async () => {
+  try {
+    const res = await Login({ username: username.value, password: password.value })
+    // 仅code=200才算登录成功
+    if (res.code === 200) {
+      const { token } = res.data || {}
+      if (token) {
+        localStorage.setItem('token', token)
+        ElMessage.success('登录成功')
+        router.push('/home')
+      } else {
+        ElMessage.error('未获取到登录凭证')
+      }
+    } else {
+      // 后端返回业务错误码提示
+      ElMessage.error(res.message || '登录失败')
+    }
+  } catch (error) {
+    ElMessage.error('网络异常，请稍后重试')
+  }
 }
 onMounted(async () => {
   // 登录页面 → 不加载菜单
@@ -41,4 +55,4 @@ onMounted(async () => {
 
 })
 </script>
-<style lang="scss" scoped ></style>
+<style lang="scss" scoped></style>
