@@ -18,6 +18,7 @@ export function dynamicRouteToVueRoute(routeList) {
         ? Layout: () => import(`@/views/` + item?.component + '.vue'),
       meta: {
         title: item.menuName,
+        name: item.menuName,
         icon: item.icon,
         hidden: !!item.hidden,
         svgName: item?.svgName,

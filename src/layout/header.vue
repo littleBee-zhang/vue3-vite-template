@@ -1,12 +1,22 @@
 <template>
   <div class="header">
     <div :style="{
-      width: collapse ? '44px' : '200px'
-    }" class="header-left">LG {{ collapse ? '' : '捕电科技' }}</div>
-
-    <!-- 折叠/展开按钮 -->
-    <el-button text :icon="collapse ? Expand : Fold" @click="toggleCollapse"
-      style="margin-right: auto;font-size: 24px;" />
+      width: collapse ? '54px' : '200px'
+    }" class="header-left">
+      <img class="header-left-img" :src="LOGO_PNG" alt="">
+      {{ collapse ? '' : '捕电科技' }}
+    </div>
+    <div class="header-center">
+      <!-- 折叠/展开按钮 -->
+      <el-button text :icon="collapse ? Expand : Fold" @click="toggleCollapse" style="font-size: 24px;" />
+      <el-icon class="center-icon" @click="goHome">
+        <HomeFilled />
+      </el-icon>
+      <!-- 新增：当前页面面包屑 -->
+      <div class="current-page">
+        <span>{{ pageName }}</span>
+      </div>
+    </div>
     <div class="header-right">
       <el-badge :value="messageTotal" :hidden="messageTotal === 0" :max="maxNumber" class="item">
         <Icon class="message" name="xiaoxizhongxin"></Icon>
@@ -40,12 +50,14 @@
 
 <script setup>
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { reactive } from 'vue';
-import { Fold, Expand, ArrowDown } from '@element-plus/icons-vue'
+import { useRouter, useRoute } from 'vue-router'
+import { reactive, computed, inject } from 'vue';
+import { Fold, Expand, ArrowDown, HomeFilled } from '@element-plus/icons-vue'
 import socket from '@/utils/socket'
+import { LOGO_PNG } from '@/assets'
 const router = useRouter()
 const store = useStore()
+const route = useRoute()
 const props = defineProps({
   modelValue: { type: [String, Number, Object], default: null },
   collapse: { type: Boolean, default: false },
@@ -54,6 +66,25 @@ const props = defineProps({
 // --- Emits ---
 const emit = defineEmits(['update:modelValue', 'toggle']);
 const messageTotal = ref(10)
+// 拿到全局菜单树
+const menuTree = inject('menuTree', [])
+
+// 递归根据path查找菜单
+const findMenu = (list, targetPath) => {
+  for (const node of (list || [])) {
+    if (node.path === targetPath) return node
+    if (node.children?.length) {
+      const child = findMenu(node.children, targetPath)
+      if (child) return child
+    }
+  }
+  return null
+}
+// 自动获取当前页面名称
+const pageName = computed(() => {
+  const target = findMenu(menuTree, route.path)
+  return target?.name || target?.meta?.title || '未知页面'
+})
 // 标记当前是否全屏
 const isFull = ref(false)
 const state = reactive({
@@ -66,6 +97,9 @@ const logout = () => {
   store.dispatch('menu/clearMenu')
   ElMessage.success('退出成功')
   setTimeout(() => { router.push('/login') }, 1000)
+}
+const goHome = () => {
+  router.push('/home')
 }
 const toggleCollapse = () => {
   emit('toggle', !props.collapse)
@@ -100,31 +134,7 @@ const switchFullScreen = () => {
 document.addEventListener('fullscreenchange', () => {
   isFull.value = !!document.fullscreenElement
 })
-onMounted(() => {
 
-  // 1. 连接
-  // socket.connect()
-
-  // // 2. 订阅消息（后端推送 type: message）
-  // socket.on('message', (data) => {
-  //   console.log('📩 收到新消息：', data)
-  //   messageTotal(100)
-  // })
-
-  // // 3. 订阅通知
-  // socket.on('notice', (data) => {
-  //   console.log('🔔 收到通知：', data)
-  // })
-})
-
-// // 发送消息
-// function sendMessage() {
-//   socket.send({
-//     type: 'message',
-//     content: '你好',
-//     userId: 1001
-//   })
-// }
 </script>
 
 <style lang="scss" scoped>
@@ -140,8 +150,29 @@ onMounted(() => {
     border-right: 1px solid #ccc;
     box-sizing: border-box;
     height: 60%;
+    // padding-left: 2px;
     display: flex;
     align-items: center;
+
+    .header-left-img {
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+  .header-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    gap: 5px;
+    .center-icon{
+      cursor: pointer;
+    }
+    .current-page {
+      position: relative;
+      top: -1px;
+    }
   }
 
   .header-right {

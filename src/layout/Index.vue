@@ -14,7 +14,7 @@
     <!-- 下部容器：侧边栏 + 内容 -->
     <el-container style="height: calc(100vh - 60px)">
       <!-- 左侧边栏 -->
-      <el-aside :width="isCollapse ? '64px' : '220px'"
+      <el-aside :width="isCollapse ? '74px' : '220px'"
         style="background-color: #fff; height: 100%; transition: width 0.3s">
         <el-menu router :default-active="selectPath" background-color="#fff" text-color="#000"
           active-text-color="#409EFF" style="height: 100%; border-right: none" :collapse="isCollapse">
@@ -33,7 +33,7 @@
 <script setup>
 import { ElMessage } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed, onMounted, provide } from 'vue'
 import { useStore } from 'vuex'
 import { Fold, Expand } from '@element-plus/icons-vue'
 import { mergeMenu, dynamicRouteToVueRoute } from '@/router/dynamicRouter'
@@ -71,6 +71,8 @@ const loadMenu = async () => {
       ).values(),
     ]
     menuList.value = routerList
+
+    provide('menuTree', routerList)
   } catch (e) {
     menuList.value = mergeMenu([], [])
   }
@@ -113,5 +115,6 @@ onMounted(async () => {
   border-bottom: 1px solid #eee;
   box-sizing: border-box;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.078);
+  // padding-left: 0;
 }
 </style>
