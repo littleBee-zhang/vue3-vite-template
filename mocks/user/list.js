@@ -9,10 +9,11 @@ export default function (req) {
 
   const data = {
     code: 200,
-    message: '',
+    message: '请求成功',
     data: {
       records: Array.from(new Array(pageSize)).map(() => ({
         id: Random.id(),
+        idCard:Random.id(),
         name: Random.cname(),
         address: Random.county(true),
         age: Random.integer(0, 100),

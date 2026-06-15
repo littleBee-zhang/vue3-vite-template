@@ -61,7 +61,8 @@
           </span>
           <!-- 普通字段 -->
           <span v-else="!col.render && !col.content && !col.actions">
-            {{ scope.row[col.dataIndex] }}
+            <!-- {{ scope.row[col.dataIndex] }} desensitize -->
+            {{ col?.yesNoMin ? desensitize(scope.row[col.dataIndex], col?.yesNoMin) : scope.row[col.dataIndex] }} 
           </span>
           <!-- <span v-else>
             {{ scope.row[col.dataIndex] }}
@@ -82,7 +83,7 @@
 <script setup>
 import { ref } from 'vue'
 import models from './models.js'
-
+import { desensitize } from '@/utils'
 const props = defineProps({
   columns: { type: Array, required: true },
   dataSource: { type: Array, default: () => [] },

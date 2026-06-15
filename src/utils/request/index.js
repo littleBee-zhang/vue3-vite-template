@@ -1,13 +1,14 @@
 import axios from 'axios'
 import md5 from 'md5'
-import { ElLoading } from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
 import { BASE_URL } from '@/constant/address.js'
 import {
   FULL_RESPONSE_WHITE_LIST,
   NO_TOKEN_WHITE_LIST,
   MD5_ENCRYPT_WHITE_LIST,
   NO_LOADING_WHITE_LIST,
-  MAX_CONCURRENT_REQUESTS
+  MAX_CONCURRENT_REQUESTS,
+  NO_REQUEST_HINT
 } from './whitelist'
 import { addSign } from './sign'
 //========= 请求管理变量 =========
@@ -148,9 +149,12 @@ service.interceptors.response.use(
     if (res.code !== 200) {
       ElMessage.error(res.message || '请求失败')
       return Promise.reject(res)
+    } else {
+      
+      if (!NO_REQUEST_HINT.includes(url)) ElMessage.success(res?.message || '请求成功')
     }
     // return res.data
-    return res
+    return res?.data
   },
   (error) => {
     //异常也要清理队列+关闭loading

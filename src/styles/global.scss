@@ -56,6 +56,12 @@
   -webkit-justify-content: space-around;
   justify-content: space-around;
 }
+/* 单行溢出隐藏 */ 
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /* 媒体查询 */
 ._media {
   @media screen and (min-width: 1601px) {

@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <Card>
-      <!-- <Icon name="jiaoseguanli" /> -->
       <Table row-key="id" ref="tableRef" :columns="Columns(del)" :data-source="dataList" :loading="loading"
         :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
         @page-change="handlePageChange" @size-change="handleSizeChange" />
@@ -10,7 +9,7 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { List, Delete } from '@/api/user.js'
+import { menuList, Delete } from '@/api/system.js'
 import { FieldMapping, generateBigDict } from '@/utils'
 import { Columns } from './columns'
 const store = useStore()
@@ -35,10 +34,12 @@ const getList =async () => {
     pageSize:pagination?.pageSize || 10,
   }
   try {
-    const res = await List(params)
-    const { total, records } = res || {}
-    pagination.total = total
-    dataList.value = records || []
+    const res = await menuList(params)
+    console.log(res);
+    
+    // const { total, records } = res || {}
+    // pagination.total = total
+    // dataList.value = records || []
   } catch (error) {
     
   }

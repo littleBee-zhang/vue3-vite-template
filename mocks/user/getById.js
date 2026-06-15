@@ -4,7 +4,7 @@ const { Random } = Mock
 export default function (req) {
   const data = {
     code: 200,
-    message: '',
+    message: '删除成功',
     data: {
       id: Random.id(),
       name: Random.cname(),

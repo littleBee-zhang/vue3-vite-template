@@ -166,6 +166,7 @@ fixed	Boolean/String	固定列 left /right
 align	String	单元格对齐 left/center/right
 ellipsis	Boolean	文字超出省略，默认 true
 sorter	Boolean	开启自定义排序
+yesNoMin	String	是否脱敏 idCard  phone  name  carNo
 customRender	Boolean	启用插槽自定义单元格
 render	Function	JSX 函数渲染单元格
 confirm	Array	操作按钮 + 弹窗确认配置

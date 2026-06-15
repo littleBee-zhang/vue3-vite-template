@@ -10,7 +10,7 @@
           <el-input v-model="password" type="password" placeholder="密码" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" native-type="submit" style="width:100%">登录</el-button>
+          <el-button type="primary" :loading="loading" native-type="submit" style="width:100%">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -25,26 +25,36 @@ import { Login } from '@/api/login'
 const route = useRoute()
 const username = ref('admin')
 const password = ref('123456')
+const loading = ref(false)
 const router = useRouter()
 
 const login = async () => {
   try {
+    loading.value = true
     const res = await Login({ username: username.value, password: password.value })
     // 仅code=200才算登录成功
+
     if (res.code === 200) {
-      const { token } = res.data || {}
+      const { token,userInfo } = res.data || {}
       if (token) {
         localStorage.setItem('token', token)
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
         ElMessage.success('登录成功')
-        router.push('/home')
+        setTimeout(() => {
+          loading.value = false
+          router.push('/home')
+        }, 1000)
       } else {
         ElMessage.error('未获取到登录凭证')
       }
     } else {
       // 后端返回业务错误码提示
       ElMessage.error(res.message || '登录失败')
+      loading.value = false
     }
+
   } catch (error) {
+    loading.value = false
     ElMessage.error('网络异常，请稍后重试')
   }
 }

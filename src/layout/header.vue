@@ -30,7 +30,7 @@
       </el-button>
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
-          欢迎您，{{ state.memberName }}
+          欢迎您，{{ memberName }}
           <!-- el-icon 同样连写，图标写法适配Element Plus -->
           <el-icon class="el-icon--right"><arrow-down /></el-icon>
         </span>
@@ -51,11 +51,12 @@
 <script setup>
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { reactive, computed, inject } from 'vue';
+import { computed, inject } from 'vue';
 import { Fold, Expand, ArrowDown, HomeFilled } from '@element-plus/icons-vue'
 import socket from '@/utils/socket'
 import { LOGO_PNG } from '@/assets'
 import { Logout } from '@/api/login'
+import { getUserInformation } from '@/utils/localCache.js'
 const router = useRouter()
 const store = useStore()
 const route = useRoute()
@@ -88,8 +89,10 @@ const pageName = computed(() => {
 })
 // 标记当前是否全屏
 const isFull = ref(false)
-const state = reactive({
-  memberName: '测试用户'
+const memberName = computed(() => {
+  const { userName } = getUserInformation()
+  return userName ||  ''
+  
 })
 // 退出
 const logout = async  () => {
@@ -98,7 +101,6 @@ const logout = async  () => {
     localStorage.removeItem('token')
     store.dispatch('dict/clearDict')
     store.dispatch('menu/clearMenu')
-    ElMessage.success('退出成功')
     router.push('/login')
   } catch (error) {
     
