@@ -30,6 +30,8 @@ UI：Element Plus
 工具：MD5 加密、签名算法、表单 / 表格 / 弹窗封装
 
 ## 目录结构
+
+```bash
 src
 ├── api                  # 所有后端接口请求封装，按业务模块拆分js文件
 │   ├── login.js         # 登录相关接口
@@ -73,3 +75,5 @@ src
     │   ├── deviceLog.vue
     │   └── deviceTransfer.vue
     └── system
+
+```
