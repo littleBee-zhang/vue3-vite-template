@@ -42,7 +42,6 @@ src
 │   └── style
 ├── constant             # 全局常量配置，地址、白名单、枚举值
 │   ├── address.js       # BASE_URL 基础地址
-│   └── whitelist.js     # 请求白名单（token/loading/加密白名单）
 ├── components           # 全局可复用公共组件，自动全局注册
 │   ├── Former           # 封装el-form高阶表单
 │   ├── Table            # 封装el-table带分页、筛选、批量操作

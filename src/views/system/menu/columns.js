@@ -1,11 +1,8 @@
 export const Columns = (del) => {
     return [
-        { title: '姓名', dataIndex: 'name', width: 120, align: 'center', },
-        { title: '年龄', dataIndex: 'age', width: 80, align: 'center', render: (row) => { return h('span', row.age) } },
-        { title: '手机号', dataIndex: 'phone', ellipsis: true, align: 'center', yesNoMin:'phone' },
-        { title: '身份证号', dataIndex: 'idCard', ellipsis: true, align: 'center', yesNoMin:'idCard' },
-        { title: '邮箱', dataIndex: 'email', ellipsis: true, align: 'center', },
-        { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
+        { title: '姓名', dataIndex: 'name', align: 'center', },
+        { title: '路径', dataIndex: 'path', ellipsis: true, align: 'center', },
+        { title: '类型', dataIndex: 'type', ellipsis: true, align: 'center', },
         {
             title: '操作',
             dataIndex: 'action',

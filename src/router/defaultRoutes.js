@@ -19,7 +19,7 @@ export const menuRoutes = [
     hidden:false,
     children: [
       {
-        path: '/system/role',
+        path: '/system/menu',
         component: () => import('@/views/system/menu/index.vue'),
         menuName: '菜单管理' ,
         icon: 'SvgIcon',
@@ -47,6 +47,13 @@ export const menuRoutes = [
     path: '/former',
     component: () => import('@/views/former/index.vue'),
     menuName:'Former',
+    icon: 'HomeFilled',
+    hidden:false,
+  },
+  {
+    path: '/demo',
+    component: () => import('@/views/former/demo.vue'),
+    menuName:'DEMO',
     icon: 'HomeFilled',
     hidden:false,
   },

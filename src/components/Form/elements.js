@@ -17,6 +17,7 @@ import {
 
 // 导入自定义价格输入组件
 import VirtualSelect from '@/components/virtualSelect/index.vue'
+import Upload from '@/components/upload/index.vue'
 // 统一别名导出
 const elements = {
   Input: ElInput,
@@ -34,6 +35,7 @@ const elements = {
   Button: ElButton,
   Transfer: ElTransfer,
   VirtualSelect,
+  Upload
 };
 
 export default elements;

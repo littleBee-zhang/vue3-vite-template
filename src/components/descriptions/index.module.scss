@@ -1,0 +1,22 @@
+/* 整行弹性布局 */
+:deep(.desc-item-wrap .el-descriptions-item__container) {
+    display: flex !important;
+    align-items: flex-start;
+    width: 100%;
+    background: greenyellow !important;
+}
+
+/* 标签固定宽度 */
+:deep(.desc-item-wrap .el-descriptions-item__label) {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* 值区域按比例分配宽度，文字自动换行 */
+.value-content {
+    word-break: break-all;
+    white-space: normal;
+    line-height: 1.6;
+}
+
+// el-descriptions__cell el-descriptions__content is-bordered-content

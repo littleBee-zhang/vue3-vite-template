@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     <Card>
-      <Table row-key="id" ref="tableRef" :columns="Columns(del)" :data-source="dataList" :loading="loading"
-        :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
+      <Table row-key="id" ref="tableRef" :columns="Columns(del)"
+        :tree-props="{ children: 'childrenMenu', hasChildren: 'hasChildren' }" :data-source="dataList" :loading="loading"
+        :pagination="false" :showIndex="true" @selection-change="handleSelectionChange"
         @page-change="handlePageChange" @size-change="handleSizeChange" />
     </Card>
   </div>
@@ -28,29 +29,24 @@ const pagination = reactive({
   total: 0
 })
 // 列表
-const getList =async () => {
+const getList = async () => {
   const params = {
-    pageNum:pagination?.current || 1,
-    pageSize:pagination?.pageSize || 10,
+    pageNum: pagination?.current || 1,
+    pageSize: pagination?.pageSize || 10,
   }
   try {
     const res = await menuList(params)
-    console.log(res);
+    dataList.value = res || []
     
-    // const { total, records } = res || {}
-    // pagination.total = total
-    // dataList.value = records || []
   } catch (error) {
-    
+
   }
 }
 const del = async (id) => {
   try {
-    const res = await Delete({id})
-    console.log(res,'res');
-    
+    const res = await Delete({ id })
   } catch (error) {
-    
+
   }
 }
 
@@ -100,5 +96,5 @@ onMounted(async () => {
 })
 </script>
 <style lang="scss" scoped>
-  @use './index.module.scss';
+@use './index.module.scss';
 </style>

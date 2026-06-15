@@ -96,17 +96,19 @@ export default function models(props, emit) {
             formData.append('file', file)
 
             const res = await request({
-                url: '/sys/common/upload',
-                method: 'post',
+                url: '/file/upload',
+                method: 'POST',
                 data: formData,
                 isUploadFile: true,
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
-
-            const url = res.result?.url || res.result || res.url || ''
+            const result = res?.data
+            console.log(result,'result');
+            
+            const url = result.result?.url || result.result || result.url || ''
             if (!url) throw new Error('上传失败，未返回URL')
 
-            const newItem = { name: file.name, url, uid: url }
+            const newItem = { name: file.name, url, uid: url,id:result.id }
 
             if (isForceSingle.value || (props.type === 'auto' && fileIsVideo)) {
                 fileList.value = [newItem]

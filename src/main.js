@@ -12,7 +12,7 @@ import App from './App.vue'
 import router from './router'
 import './style.css'
 import './styles/theme.scss' // 引入主题样式
-
+import './utils/flexible.js'
 import store from './store' // 引入
 
 // 开发环境才启用mock，生产自动屏蔽

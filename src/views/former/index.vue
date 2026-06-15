@@ -2,10 +2,14 @@
   <Card>
     <Form ref="formRef" :dataSource="dataSource" :column="3" submit-text="提交" reset-text="重置" @submit="handleSubmit"
       @reset="handleReset" @fields-change="handleFieldsChange" @values-change="handleValuesChange" />
+    <Descriptions :detailData="detailInfo" :options="descList" column="2" title="">
+    </Descriptions>
   </Card>
 </template>
 
 <script setup>
+import { ElImage } from 'element-plus'
+
 const formerRef = ref(null)
 const dataSource = [
   {
@@ -43,6 +47,7 @@ const dataSource = [
       allowClear: true,
     },
   },
+  { key: 'upload', label: '上传', view: 'Upload' },
   { key: 'birthday', label: '生日', view: 'Picker' },
   { key: 'city', label: '城市', view: 'Cascader' },
   { key: 'remark', label: '备注', view: 'Input', viewProps: { type: 'textarea' } },
@@ -65,6 +70,51 @@ const handleFieldsChange = (changed, all) => {
 const handleValuesChange = (changed, all) => {
   // console.log('值变化', changed, all)
 }
+// 
+// 接口返回详情数据
+const detailInfo = {
+  id: 10086,
+  userName: 'https://picsum.photos/id/237/200/200https://picsum.photos/id/237/200/200',
+  phone: '13900139000',
+  state: 1,
+  balance: 6892.3,
+  createTime: '2026-06-15 14:20:00 ',
+  avatar: 'https://picsum.photos/id/237/200/200'
+}
+// 渲染配置数组
+const descList = [
+  { label: '编号', prop: 'id' ,span:2 },
+  {
+    label: '姓名', prop: 'userName',
+    render: (row) => {
+      return h('span', row?.row.userName)
+    },
+  },
+  {
+    label: '手机号', prop: 'phone',
+    render: (row) => h(ElImage, {
+      src: row?.row.avatar,
+      style: 'width:60px;height:60px;border-radius:50%',
+      fit: 'cover',
+      preview: true // 开启点击预览
+    })
+  },
+  {
+    label: '账号状态',
+    prop: 'state',
+    type: 'tag',
+    dict: { 1: '正常', 0: '冻结' },
+    tagType: { 1: 'success', 0: 'danger' }
+  },
+  { label: '账户余额', prop: 'balance', type: 'money', decimal: 2 },
+  { label: '创建时间', prop: 'createTime', type: 'date' }
+]
+
+// 插槽配置
+const slotList = [
+  { label: '头像', prop: 'avatar' },
+  { label: '用户名', prop: 'userName' }
+]
 </script>
 
 <style lang="scss" scoped>

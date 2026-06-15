@@ -61,12 +61,8 @@
           </span>
           <!-- 普通字段 -->
           <span v-else="!col.render && !col.content && !col.actions">
-            <!-- {{ scope.row[col.dataIndex] }} desensitize -->
-            {{ col?.yesNoMin ? desensitize(scope.row[col.dataIndex], col?.yesNoMin) : scope.row[col.dataIndex] }} 
+            {{ col?.yesNoMin ? desensitize(scope.row[col.dataIndex], col?.yesNoMin) : scope.row[col.dataIndex] }}
           </span>
-          <!-- <span v-else>
-            {{ scope.row[col.dataIndex] }}
-          </span> -->
         </template>
       </el-table-column>
 
@@ -75,7 +71,7 @@
     <!-- 分页 -->
     <div v-if="pagination" class="pagination-wrapper">
       <el-pagination background v-model:current-page="currentPage" v-model:page-size="pageSize" :total="total"
-        :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+        :page-sizes="pageSizes" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
         @current-change="handleCurrentChange" />
     </div>
   </div>
@@ -102,6 +98,7 @@ const props = defineProps({
   alignCenter: { type: String, default: 'center' },
   height: { type: [String, Number] },
   maxHeight: { type: [String, Number], default: 600, },
+  pageSizes: { type: Array, default: [10, 20, 50, 100], },
   headerCellStyle: Object,
   cellStyle: Object,
   defaultSort: Object,

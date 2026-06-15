@@ -77,12 +77,12 @@ service.interceptors.request.use(
       }, 10000) // 10秒超时
     }
     // ====================== 核心：合并 headers（不替换）======================
-    // 外部传入的 headers → 合并到默认里，不会覆盖默认
+    // 外部传入的 headers → 合并到默认里（外部优先）
     if (config.headers) {
       config.headers = {
         ...service.defaults.headers.common, // 默认基础头
         ...service.defaults.headers.post,
-        ...config.headers,       // 外部传入（优先使用）
+        ...config.headers,
       }
     }
     //5.token携带逻辑

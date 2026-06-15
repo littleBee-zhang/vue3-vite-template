@@ -7,6 +7,7 @@ import Form from './Form/index.vue'
 import Icon from './iocn/index.vue'
 import Echarts from './Echarts/index.vue'
 import Upload from './upload/index.vue'
+import Descriptions from './descriptions/index.vue'
 Dialog.Confirm = Confirm // 
 /**  组件注册  **/ 
 const install = (app) => {
@@ -17,6 +18,7 @@ const install = (app) => {
   app.component('Echarts', Echarts)
   app.component('Dialog', Dialog)
   app.component('Upload', Upload)
+  app.component('Descriptions', Descriptions)
 }
 /**  支持按需引入  **/   
 Form.install = install
@@ -26,5 +28,6 @@ Dialog.install = install
 Icon.install = install
 Echarts.install = install
 Upload.install = install
+Descriptions.install = install
 
 export default { install }

@@ -45,7 +45,6 @@ export default function models(props, emit) {
         const { onClick, ...rest } = item
         return rest
     }
-
     return {
         currentPage,
         pageSize,

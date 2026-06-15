@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Login } from '@/api/login'
@@ -58,11 +58,17 @@ const login = async () => {
     ElMessage.error('网络异常，请稍后重试')
   }
 }
-onMounted(async () => {
-  // 登录页面 → 不加载菜单
+const keyEvent = (e) => {
+  if (e.key === 'Enter') login()
+}
 
-  // console.log(route);
-
+// 挂载监听
+onMounted(() => {
+  window.addEventListener('keydown', keyEvent)
+})
+// 销毁必须移除监听，防止多页面冲突
+onUnmounted(() => {
+  window.removeEventListener('keydown', keyEvent)
 })
 </script>
 <style lang="scss" scoped></style>
