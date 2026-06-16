@@ -1,24 +1,12 @@
 <template>
-    <!-- :openButtonProps="openButtonProps" -->
-    <Dialog 
-        :title="title" 
-        :openText="openText" 
-        @open="()=>{
-            console.log(props?.row,'打开弹窗之前');
-            
-        }"
-        :on-ok="(close)=>{
-            close()
-        }"
-    >
-    <!-- <template #openButton="{ open }">
-        <el-button type="success" icon="el-icon-plus" @click="open">
-        新增
-        </el-button>
-    </template> -->
-
-        弹窗内容
-    </Dialog>
+  <!--  -->
+  <Dialog :title="title" :openButtonProps="openButtonProps" :openText="openText" @open="() => {
+    console.log(props?.row, '打开弹窗之前');
+  }" :on-ok="(close) => {
+    close()
+  }">
+    弹窗内容
+  </Dialog>
 </template>
 
 <script setup>
@@ -32,8 +20,8 @@ const props = defineProps({
     type: [Number, String],
     default: '200px'
   },
-  title:{  type: String,  default: '标题'},
-  openText:{  type: String,  default: '编辑'},
+  title: { type: String, default: '标题' },
+  openText: { type: String, default: '编辑' },
   openButtonProps: { type: Object, default: () => ({}) },
 })
 
@@ -49,5 +37,4 @@ const emit = defineEmits([
 
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

@@ -45,6 +45,16 @@ export default function models(props, emit) {
         const { onClick, ...rest } = item
         return rest
     }
+    // 新增权限校验方法
+    const checkPermission = (perm) => {
+        console.log(perm);
+        
+        // 无权限标识直接展示
+        if (!perm) return true
+        console.log(perm,'perm',props.permissions);
+        // 匹配权限数组
+        return (props?.permissions || []).includes(perm)
+    }
     return {
         currentPage,
         pageSize,
@@ -54,6 +64,7 @@ export default function models(props, emit) {
         handleCurrentChange,
         handleSelectionChange,
         handleSortChange,
-        getBtnProps
+        getBtnProps,
+        checkPermission
     }
 }

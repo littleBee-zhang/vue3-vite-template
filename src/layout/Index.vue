@@ -83,7 +83,7 @@ watch(
   { immediate: true }
 )
 onMounted(async () => {
-  const token = localStorage.getItem('token')
+  const token = sessionStorage.getItem('token')
   if (!token) return
 
   // 全局拉取常用字典

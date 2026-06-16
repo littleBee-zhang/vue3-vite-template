@@ -140,6 +140,7 @@ const handleRefresh = ()=>{
 参数	类型	默认值	说明
 columns	Array	必填	表格列配置数组
 dataSource	Array	[]	表格数据源
+permissions	Array	[]	用户权限数组
 rowKey	String	id	行主键字段名
 loading	Boolean	false	表格加载状态
 pagination	Object/Boolean	true	分页配置，false 关闭分页
@@ -160,6 +161,7 @@ defaultSort	Object	{prop:'age',order:'descending'}	默认排序
 <!-- columns 列配置参数 -->
 字段	类型	说明
 title	String	列表头名称
+permission	String	权限标识
 dataIndex	String	绑定数据源字段
 width/minWidth	Number	列宽、最小自适应宽度
 fixed	Boolean/String	固定列 left /right

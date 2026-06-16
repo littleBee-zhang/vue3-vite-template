@@ -87,7 +87,7 @@ service.interceptors.request.use(
         }
         //5.token携带逻辑
         if (!NO_TOKEN_WHITE_LIST.includes(config.url)) {
-            const token = localStorage.getItem('token')
+            const token = sessionStorage.getItem('token')
             if (token) config.headers['X-Access-Token'] = `${token}`
         }
         // ====================== 上传文件处理 ======================
@@ -169,7 +169,7 @@ service.interceptors.response.use(
         //401登录过期
         if (error.response?.status === 401) {
             ElMessage.error('登录已过期，请重新登录')
-            localStorage.removeItem('token')
+            sessionStorage.removeItem('token')
             // window.location.href = '/login'
         } else {
             ElMessage.error(error.message || '网络异常')

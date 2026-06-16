@@ -8,8 +8,8 @@
     </slot>
 
     <!-- 弹窗 -->
-    <el-dialog ref="dialogRef" v-model="visible" :title="title" :width="dialogWidth" :class="className" :style="style"
-      destroy-on-close @close="handleCancel" @closed="afterClose" z-index="ZIndex">
+    <el-dialog ref="dialogRef" append-to-body v-model="visible" :title="title" :width="dialogWidth" :class="className"
+      :style="style" destroy-on-close @close="handleCancel" @closed="afterClose" z-index="ZIndex">
       <slot />
 
       <template #footer v-if="!customFooter">

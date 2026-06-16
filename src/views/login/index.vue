@@ -37,7 +37,7 @@ const login = async () => {
     if (res.code === 200) {
       const { token,userInfo } = res.data || {}
       if (token) {
-        localStorage.setItem('token', token)
+        sessionStorage.setItem('token', token)
         localStorage.setItem('userInfo', JSON.stringify(userInfo))
         ElMessage.success('登录成功')
         setTimeout(() => {

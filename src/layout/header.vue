@@ -98,7 +98,7 @@ const memberName = computed(() => {
 const logout = async  () => {
   try {
     const res = await Logout()
-    localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
     store.dispatch('dict/clearDict')
     store.dispatch('menu/clearMenu')
     router.push('/login')

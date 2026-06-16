@@ -29,26 +29,28 @@
           <!-- 多操作列 -->
           <el-space v-if="col.actions" :size="spaceSize">
             <template v-for="(item, idx) in col.actions" :key="idx">
-              <!-- 渲染函数 / 组件 -->
-              <component v-if="typeof item.content === 'function'" :is="item.content(scope.row)" />
+              <template v-if="checkPermission(item.permission)">
+                <!-- 渲染函数 / 组件 -->
+                <component v-if="typeof item.content === 'function'" :is="item.content(scope.row)" />
 
-              <!-- 确认按钮 -->
-              <el-popconfirm v-else-if="item.confirm" :title="item.confirm" @confirm="() => {
-                item.onClick?.(scope?.row || {})
-              }">
-                <template #reference>
-                  <el-button size="small" v-bind="getBtnProps(item)" @click.stop>
-                    {{ item.content }}
-                  </el-button>
-                </template>
-              </el-popconfirm>
+                <!-- 确认按钮 -->
+                <el-popconfirm v-else-if="item.confirm" :title="item.confirm" @confirm="() => {
+                  item.onClick?.(scope?.row || {})
+                }">
+                  <template #reference>
+                    <el-button size="small" v-bind="getBtnProps(item)" @click.stop>
+                      {{ item.content }}
+                    </el-button>
+                  </template>
+                </el-popconfirm>
 
-              <!-- 普通按钮 -->
-              <el-button v-else size="small" v-bind="getBtnProps(item)" @click.stop="() => {
-                item.onClick?.(scope?.row || {})
-              }">
-                {{ item.content }}
-              </el-button>
+                <!-- 普通按钮 -->
+                <el-button v-else size="small" v-bind="getBtnProps(item)" @click.stop="() => {
+                  item.onClick?.(scope?.row || {})
+                }">
+                  {{ item.content }}
+                </el-button>
+              </template>
             </template>
           </el-space>
 
@@ -102,6 +104,7 @@ const props = defineProps({
   headerCellStyle: Object,
   cellStyle: Object,
   defaultSort: Object,
+  permissions: { type: Array, default: () => [] }
 })
 
 const emit = defineEmits(['selection-change', 'sort-change', 'page-change', 'size-change'])
@@ -117,7 +120,8 @@ const {
   handleCurrentChange,
   handleSelectionChange,
   handleSortChange,
-  getBtnProps
+  getBtnProps,
+  checkPermission
 } = models(props, emit, tableRef)
 
 // 暴露方法

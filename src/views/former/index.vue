@@ -83,7 +83,7 @@ const detailInfo = {
 }
 // 渲染配置数组
 const descList = [
-  { label: '编号', prop: 'id' ,span:2 },
+  { label: '编号', prop: 'id' ,span:1 },
   {
     label: '姓名', prop: 'userName',
     render: (row) => {

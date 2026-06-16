@@ -97,7 +97,7 @@ export default function models(
             emit("confirm", values);
             props.onConfirm(values);
             emit("submit", values);
-            props.onSubmit(values);
+            // props.onSubmit(values);
             return values;
         } catch (err) {
             console.warn("表单校验失败", err);

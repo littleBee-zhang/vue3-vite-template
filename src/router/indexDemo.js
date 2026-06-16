@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
   // ==========================
   // 2. 没登录 → 去登录
   // ==========================
-  const token = localStorage.getItem('token')
+  const token = sessionStorage.getItem('token')
   if (!token) {
     return next('/login')
   }

@@ -2,9 +2,9 @@
   <div class="home">
     <Card>
       <!-- <Icon name="jiaoseguanli" /> -->
-      <Table row-key="id" ref="tableRef" :columns="Columns(del)" :data-source="dataList" :loading="loading"
-        :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
-        @page-change="handlePageChange" @size-change="handleSizeChange" />
+      <Table row-key="id" ref="tableRef" :columns="[...Columns, ...actionList]" :data-source="dataList"
+        :loading="loading" :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
+        @page-change="handlePageChange" @size-change="handleSizeChange" :permissions="['edit']" />
     </Card>
   </div>
 </template>
@@ -13,6 +13,7 @@ import { useStore } from 'vuex'
 import { List, Delete } from '@/api/user.js'
 import { FieldMapping, generateBigDict } from '@/utils'
 import { Columns } from './columns'
+import Operation from './operation.vue'
 const store = useStore()
 const dictList = store.state.dict
 
@@ -28,11 +29,28 @@ const pagination = reactive({
   pageSize: 10,
   total: 0
 })
+const actionList = [
+  {
+    title: '操作',
+    dataIndex: 'action',
+    width: 150,
+    align: 'center',
+    fixed: 'right',
+    actions: [
+      // 编辑
+      { key: 'edit', permission:'edit', type: 'primary', link: true, content: '编辑', onClick: (row) => actionMethod(row, 'edit') },
+      // 2. 删除（带确认）
+      { key: 'delete', type: 'danger', link: true, content: '删除', confirm: '确定要删除吗？', onClick: (row) => actionMethod(row, 'delete') },
+      // 3. 普通按钮
+      { key: 'detail', type: 'success', link: true, content: '详情', onClick: (row) => actionMethod(row, 'detail') }
+    ]
+  },
+]
 // 列表
-const getList =async () => {
+const getList = async () => {
   const params = {
-    pageNum:pagination?.current || 1,
-    pageSize:pagination?.pageSize || 10,
+    pageNum: pagination?.current || 1,
+    pageSize: pagination?.pageSize || 10,
   }
   try {
     const res = await List(params)
@@ -40,19 +58,21 @@ const getList =async () => {
     pagination.total = total
     dataList.value = records || []
   } catch (error) {
-    
+
   }
 }
 const del = async (id) => {
   try {
-    const res = await Delete({id})
-    console.log(res,'res');
-    
+    await Delete({ id })
   } catch (error) {
-    
+
   }
 }
-
+// 表格操作方法
+const actionMethod = (row, type) => {
+  if (type === 'delete') del({ id: row.id })
+  console.log(row, type);
+}
 
 // 分页切换
 const handlePageChange = (page, size) => {
@@ -99,5 +119,5 @@ onMounted(async () => {
 })
 </script>
 <style lang="scss" scoped>
-  @use './index.module.scss';
+@use './index.module.scss';
 </style>

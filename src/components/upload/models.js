@@ -103,7 +103,6 @@ export default function models(props, emit) {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
             const result = res?.data
-            console.log(result,'result');
             
             const url = result.result?.url || result.result || result.url || ''
             if (!url) throw new Error('上传失败，未返回URL')

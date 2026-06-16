@@ -16,7 +16,7 @@ export default function (req) {
         idCard:Random.id(),
         name: Random.cname(),
         address: Random.county(true),
-        age: Random.integer(0, 100),
+        age: Random.integer(18, 27),
         deptName: Random.cname(),
         email: Random.email(),
         password: Random.string(),
