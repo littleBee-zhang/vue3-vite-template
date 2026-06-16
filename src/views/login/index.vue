@@ -22,12 +22,19 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Login } from '@/api/login'
+import { getMenu } from '@/api/menu'
+import { mergeUniqueMenuByPath } from '@/router/treemenu'
+
+import { menuRoutes } from '@/router/defaultRoutes'
+// 导入加载动态路由方法
+// import { loadAsyncRoutes } from '@/router'
+import { useStore } from 'vuex'
 const route = useRoute()
 const username = ref('admin')
 const password = ref('123456')
 const loading = ref(false)
 const router = useRouter()
-
+const store = useStore()
 const login = async () => {
   try {
     loading.value = true
@@ -35,12 +42,15 @@ const login = async () => {
     // 仅code=200才算登录成功
 
     if (res.code === 200) {
-      const { token,userInfo } = res.data || {}
+      const { token, userInfo } = res.data || {}
       if (token) {
         sessionStorage.setItem('token', token)
         localStorage.setItem('userInfo', JSON.stringify(userInfo))
         ElMessage.success('登录成功')
-        setTimeout(() => {
+        // 拉取菜单
+        const result = await getMenu()
+        await store.dispatch('menu/setMenu',(mergeUniqueMenuByPath(menuRoutes,result)))
+        setTimeout(async () => {
           loading.value = false
           router.push('/home')
         }, 1000)

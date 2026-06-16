@@ -1,66 +1,127 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { dynamicRouteToVueRoute, mergeMenu } from './dynamicRouter'
+import { dynamicRouteToVueRoute } from './dynamicRouter'
 import { menuRoutes } from './defaultRoutes'
 import { getMenu } from '@/api/menu'
 import request from '@/utils/request'
 import Layout from '@/layout/Index.vue'
+import { mergeUniqueMenuByPath } from './treemenu'
+import store from '@/store'
 
-// 基础路由 -- (menuRoutes-默认路由)
+// 全局变量 顶层定义
+const addedRouteNames = new Set()
+let isDynamicRouteAdded = false
+
 const baseRoutes = [
-  { path: '/',redirect: '/home',},
-  { path: '/login', component: () => import('@/views/login/index.vue'),  meta: { hidden: true }},
-  { path: '/', component: Layout, redirect: '/home', children: menuRoutes},
+  {
+    path: '/',
+    name: '/',
+    redirect: '/home',
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login/index.vue'),
+    meta: { hidden: true }
+  },
+  {
+    path: '/',
+    component: Layout,
+    name: 'layout',
+    redirect: '/home',
+    children: []
+  },
 ]
+
 const router = createRouter({
   history: createWebHistory(),
   routes: baseRoutes,
 })
 
-let isDynamicRouteAdded = false
+// 递归添加树形路由
+const addTreeDynamicRoutes = (routeList, parentName = 'layout') => {
+  routeList.forEach(route => {
+    if (addedRouteNames.has(route.name)) return
+    addedRouteNames.add(route.name)
+    router.addRoute(parentName, route)
+    if (route.children?.length) {
+      addTreeDynamicRoutes(route.children, route.name)
+    }
+  })
+}
 
+// 规范路由守卫：禁止setTimeout包裹next，所有分支同步next
 router.beforeEach(async (to, from, next) => {
-  request.cancelAllRequest()
-
-  // 登录页直接放行
-  if (to.path === '/login') {
-    return next()
-  }
-  const token = sessionStorage.getItem('token')
-  if (!token) {
-    return next('/login')
-  }
-
-  // 已经添加过动态路由 → 不再重复添加 
-  if (isDynamicRouteAdded) {
-    return next()
-  }
-
+  // 捕获取消请求异常
   try {
-    // 获取后端菜单
-    // const res = await getMenu().catch(() => ({ menus: [] }))
+    request.cancelAllRequest()
+  } catch (e) {
+    console.warn('取消请求异常忽略', e)
+  }
+
+  // 分支1：去往登录页直接放行
+  if (to.path === '/login') {
+    next()
+    return
+  }
+
+  const token = sessionStorage.getItem('token')
+  // 分支2：无token跳转登录
+  if (!token) {
+    isDynamicRouteAdded = false
+    addedRouteNames.clear()
+    store.dispatch('menu/clearMenu')
+    next('/login')
+    return
+  }
+
+  // 分支3：路由已加载完成，直接放行
+  if (isDynamicRouteAdded) {
+    next()
+    return
+  }
+// 获取是否已加载菜单
+  const isLoaded = store.state.menu?.loadStatus
+  
+  if (isLoaded) return next()
+  // 分支4：首次加载菜单&动态路由
+  try {
+    const res = await getMenu()
+    console.log(res,'res');
     
-    // const menus = res.menus || []
-
-    // 合并：默认菜单 + 动态菜单
-    const mergedMenus = mergeMenu([], [])
-
-    // 转成 vue 路由
+    const backendMenus = res || []
+    const mergedMenus = mergeUniqueMenuByPath(menuRoutes, backendMenus)
+    // 修正action名称：匹配menu模块setMenu，不是loadMenu
+    store.dispatch('menu/setMenu', mergedMenus)
     const dynamicRoutes = dynamicRouteToVueRoute(mergedMenus)
+    addTreeDynamicRoutes(dynamicRoutes)
 
-    // 批量添加动态路由
-    dynamicRoutes.forEach(route => {
-      router.addRoute(route)
+    // 动态路由注册完成后再注册404兜底路由
+    router.addRoute({
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/views/error/index.vue')
     })
 
     isDynamicRouteAdded = true
+    store.dispatch('menu/setLoadStatus', true)
 
-    // 安全跳转，不会死循环
-    next({ path: to.fullPath, replace: true })
-  } catch (e) {
-    console.log(e,'e');
+    // 关键修复：不用setTimeout嵌套next，采用replace模式重定向
+    next({ ...to, replace: true })
+  } catch (err) {
+    console.error('菜单加载失败', err)
+    sessionStorage.removeItem('token')
+    isDynamicRouteAdded = false
+    addedRouteNames.clear()
+    store.dispatch('menu/clearMenu')
     next('/login')
-    
   }
 })
+
+// 退出登录重置缓存
+export function resetRouteCache() {
+  isDynamicRouteAdded = false
+  addedRouteNames.clear()
+  store.dispatch('menu/clearMenu')
+}
 
 export default router

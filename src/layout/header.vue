@@ -91,19 +91,21 @@ const pageName = computed(() => {
 const isFull = ref(false)
 const memberName = computed(() => {
   const { userName } = getUserInformation()
-  return userName ||  ''
-  
+  return userName || ''
+
 })
 // 退出
-const logout = async  () => {
+const logout = async () => {
   try {
     const res = await Logout()
     sessionStorage.removeItem('token')
     store.dispatch('dict/clearDict')
     store.dispatch('menu/clearMenu')
+    // 重置动态路由标记
+    window.isDynamicRouteAdded = false
     router.push('/login')
   } catch (error) {
-    
+
   }
 }
 const goHome = () => {
@@ -174,9 +176,11 @@ document.addEventListener('fullscreenchange', () => {
     align-items: center;
     font-size: 20px;
     gap: 5px;
-    .center-icon{
+
+    .center-icon {
       cursor: pointer;
     }
+
     .current-page {
       position: relative;
       top: -1px;

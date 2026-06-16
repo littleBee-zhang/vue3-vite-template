@@ -6,6 +6,67 @@
  * **/ 
 export const menuRoutes = [
   {
+    path: '/dashboard',
+    component: () => import('@/views/dashboard/index.vue'),
+    menuName:'Dashboard',
+    icon: 'HomeFilled',
+    hidden:false,
+  },
+  {
+    path: '/home',
+    component: () => import('@/views/home/index.vue'),
+    menuName:'首页',
+    icon: 'HomeFilled',
+    hidden:false,
+  },
+  // {
+  //   path: '/system',
+  //   menuName:'系统管理',
+  //   icon: 'Menu',
+  //   hidden:false,
+  //   children: [
+  //     {
+  //       path: '/system/menu',
+  //       component: () => import('@/views/system/menu/index.vue'),
+  //       menuName: '菜单管理' ,
+  //       icon: 'SvgIcon',
+  //       svgName:'jiaoseguanli',
+  //       hidden:false,
+  //     },
+  //     {
+  //       path: '/system/user',
+  //       component: () => import('@/views/system/user/index.vue'),
+  //       menuName: '用户管理' ,
+  //       icon: 'User',
+  //       hidden:false,
+  //     },
+  //     {
+  //       path: '/system/role',
+  //       component: () => import('@/views/system/role/index.vue'),
+  //       menuName: '角色管理' ,
+  //       icon: 'SvgIcon',
+  //       svgName:'jiaoseguanli',
+  //       hidden:false,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/former',
+  //   component: () => import('@/views/former/index.vue'),
+  //   menuName:'Former',
+  //   icon: 'HomeFilled',
+  //   hidden:false,
+  // },
+  // {
+  //   path: '/demo',
+  //   component: () => import('@/views/former/demo.vue'),
+  //   menuName:'DEMO',
+  //   icon: 'HomeFilled',
+  //   hidden:false,
+  // },
+]
+export const menuRoutesList = [
+  {
     path: '/home',
     component: () => import('@/views/home/index.vue'),
     menuName:'首页',
@@ -13,7 +74,7 @@ export const menuRoutes = [
     hidden:false,
   },
   {
-    path: '/system',
+    path: 'system',
     menuName:'系统管理',
     icon: 'Menu',
     hidden:false,

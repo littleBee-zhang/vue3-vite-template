@@ -113,8 +113,8 @@ const handleRefresh = () => {
 let statusList = []
 let sexList = []
 onMounted(async () => {
-  statusList = await store.dispatch('dict/getDict', 'status')
-  sexList = await store.dispatch('dict/getDict', 'sex')
+  // statusList = await store.dispatch('dict/getDict', 'status')
+  // sexList = await store.dispatch('dict/getDict', 'sex')
   getList()
 })
 </script>

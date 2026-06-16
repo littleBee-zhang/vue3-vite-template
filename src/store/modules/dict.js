@@ -21,25 +21,14 @@ const actions = {
    * @param type 字典类型：status / sex / role 等
    */
   async getDict({ commit, state }, type) {
-    // 1. 如果没有该类型 → 直接请求
-    if (!state.dictMap[type]) {
-      return await requestDict()
-    }
-
-    // 2. 如果有该类型，但数组为空 → 重新请求
-    if (Array.isArray(state.dictMap[type]) && state.dictMap[type].length === 0) {
-      return await requestDict()
-    }
-
-    // 3. 正常有缓存 → 直接返回
-    return state.dictMap[type]
-
-    // 请求方法封装
+    // 封装请求，传入type
     async function requestDict() {
-      
       try {
         const res = await getDict(type)
+        console.log(res,'res');
+        
         const data = res.data || []
+        // 存入仓库缓存
         commit('SET_DICT', { type, data })
         return data
       } catch (e) {
@@ -47,6 +36,15 @@ const actions = {
         return []
       }
     }
+
+    // 统一判断：无缓存 或 缓存是空数组 → 重新请求
+    const cache = state.dictMap[type]
+    if (!cache || (Array.isArray(cache) && cache.length === 0)) {
+      return await requestDict()
+    }
+
+    // 缓存有效直接返回
+    return cache
   },
 
   // 清空所有字典缓存
@@ -54,7 +52,6 @@ const actions = {
     commit('CLEAR_DICT')
   },
 }
-
 export default {
   namespaced: true,
   state,

@@ -7,7 +7,7 @@ export default function (req) {
     message: '',
     data: {
       id: Random.id(),
-      name: Random.name(),
+      name: Random.cname(),
     },
   };
   return data

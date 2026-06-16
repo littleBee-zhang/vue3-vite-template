@@ -12,7 +12,7 @@ export default function (req) {
     data: {
       records: Array.from(new Array(pageSize)).map(() => ({
         id: Random.id(),
-        name: Random.name(),
+        name: Random.cname(),
       })),
       pages: pageNum,
       size: pageSize,

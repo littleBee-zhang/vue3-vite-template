@@ -1,7 +1,9 @@
 import { getMenu } from '@/api/menu'
-
+import { menuRoutes, menuRoutesList } from '@/router/defaultRoutes'
 const state = {
   menuList: [], // 侧边栏菜单
+  permissionList: [], // 按钮权限合集
+  loadStatus: false
 }
 
 const mutations = {
@@ -11,21 +13,29 @@ const mutations = {
   CLEAR_MENU(state) {
     state.menuList = []
   },
+  SET_PERM(state, list) {
+    state.permissionList = list
+  },
+  CLEAR_PERM(state) {
+    state.permissionList = []
+  },
 }
 
 const actions = {
-  async loadMenu({ commit }) {
+  setMenu({ commit }, list) {
     try {
-      const res = await getMenu()
-      commit('SET_MENU', res.data || [])
-      return res.data
+      commit('SET_MENU', list || [])
+      return res
     } catch (e) {
       return []
     }
   },
-
   clearMenu({ commit }) {
     commit('CLEAR_MENU')
+  },
+  // 设置加载状态
+  setLoadStatus(status) {
+    this.loadStatus = status
   },
 }
 

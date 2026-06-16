@@ -206,6 +206,13 @@ function cancelAllRequest() {
     loadingInstance = null;
   }
 }
+// 改造：不再依赖this，直接操作外部变量，任意方式调用都不会报错
+// service.cancelAllRequest = () => {
+//   pendingCancelSources.forEach(item => {
+//     item.cancel('路由跳转，取消未完成请求')
+//   })
+//   pendingCancelSources = []
+// }
 // 强制绑定this指向axios实例service
 service.cancelAllRequest = cancelAllRequest.bind(service);
 export default service

@@ -16,8 +16,8 @@
       <!-- 左侧边栏 -->
       <el-aside :width="isCollapse ? '74px' : '220px'"
         style="background-color: #fff; height: 100%; transition: width 0.3s">
-        <el-menu router :default-active="selectPath" background-color="#fff" text-color="#000"
-          active-text-color="#409EFF" style="height: 100%; border-right: none" :collapse="isCollapse">
+        <el-menu router :default-openeds="defaultOpeneds" :default-active="selectPath" background-color="#fff"
+          text-color="#000" active-text-color="#409EFF" style="height: 100%; border-right: none" :collapse="isCollapse">
           <sidebar-item v-for="item in menuList" :key="item.path" :item="item" :collapse="isCollapse" />
         </el-menu>
       </el-aside>
@@ -37,15 +37,18 @@ import { ref, watch, computed, onMounted, provide } from 'vue'
 import { useStore } from 'vuex'
 import { Fold, Expand } from '@element-plus/icons-vue'
 import { mergeMenu, dynamicRouteToVueRoute } from '@/router/dynamicRouter'
-import { menuRoutes } from '@/router/defaultRoutes'
-import { getMenu } from '@/api/menu'
+import { menuRoutes, menuRoutesList } from '@/router/defaultRoutes'
+
 import SidebarItem from './SidebarItem.vue'
 import Header from './header.vue'
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const defaultOpeneds = computed(() => {
+  return (store.state.menu?.menuList || menuRoutes).map(item => item.path)
+})
 const menuList = ref([])
-const selectPath = ref('') // 修复拼写错误
+const selectPath = ref('')
 // 全屏判断（登录页）
 const isFullScreen = computed(() => {
   return route.path === '/login' || route.meta?.hidden === true
@@ -59,7 +62,9 @@ const toggleCollapse = (value) => {
 }
 // 加载菜单
 const loadMenu = async () => {
-  const list = dynamicRouteToVueRoute(menuRoutes).filter((item) => {
+  console.log(store.state.menu?.menuList);
+  
+  const list = dynamicRouteToVueRoute(store.state.menu?.menuList || menuRoutes).filter((item) => {
     return item.meta?.title && !item.meta?.hidden
   })
   selectPath.value = route?.path
@@ -79,20 +84,24 @@ const loadMenu = async () => {
 }
 watch(
   () => route.path,
-  () => loadMenu(),
+  () => {
+    loadMenu()
+  },
   { immediate: true }
 )
 onMounted(async () => {
+  // await store.dispatch('menu/loadMenu')
+  // console.log(1);
+  
   const token = sessionStorage.getItem('token')
   if (!token) return
-
   // 全局拉取常用字典
-  await store.dispatch('dict/getDict', 'status')
-  await store.dispatch('dict/getDict', 'sex')
-  await store.dispatch('dict/getDict', 'role')
+  // await store.dispatch('dict/getDict', 'status')
+  // await store.dispatch('dict/getDict', 'sex')
+  // await store.dispatch('dict/getDict', 'role')
 
   // 拉取菜单
-  // await store.dispatch('menu/getMenu')
+  // await store.dispatch('menu/loadMenu')
 })
 </script>
 

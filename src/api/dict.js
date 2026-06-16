@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 export const getDict = (params) => {
-//   return request({
-//     url: '/system/menu/list',
-//     method: 'get'
-//   })
-return []
+    // return []
+    return request({
+        url: '/dict/list',
+        method: 'POST'
+    })
 }

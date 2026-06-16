@@ -1,8 +1,10 @@
 import request from '@/utils/request'
+
+import { menuRoutes, menuRoutesList } from '@/router/defaultRoutes'
 export const getMenu = () => {
-//   return request({
-//     url: '/system/menu/list',
-//     method: 'get'
-//   })
-return []
+    return menuRoutesList
+    // return request({
+    //     url: '/menu/list',
+    //     method: 'POST'
+    // })
 }
