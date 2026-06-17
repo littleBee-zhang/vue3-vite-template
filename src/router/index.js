@@ -79,27 +79,34 @@ router.beforeEach(async (to, from, next) => {
     next()
     return
   }
-// 获取是否已加载菜单
+  // 获取是否已加载菜单
   const isLoaded = store.state.menu?.loadStatus
-  
+
   if (isLoaded) return next()
   // 分支4：首次加载菜单&动态路由
   try {
     const res = await getMenu()
-    console.log(res,'res');
-    
+    console.log(res, 'res');
+
     const backendMenus = res || []
     const mergedMenus = mergeUniqueMenuByPath(menuRoutes, backendMenus)
-    // 修正action名称：匹配menu模块setMenu，不是loadMenu
+
     store.dispatch('menu/setMenu', mergedMenus)
     const dynamicRoutes = dynamicRouteToVueRoute(mergedMenus)
     addTreeDynamicRoutes(dynamicRoutes)
 
     // 动态路由注册完成后再注册404兜底路由
     router.addRoute({
+      path: '/404',
+      name:'404',
+      component: () => import('@/views/error/index.vue'),
+      meta: { hidden: true }
+    })
+    // 通配所有未匹配路径，跳转404
+    router.addRoute({
       path: '/:pathMatch(.*)*',
-      name: 'NotFound',
-      component: () => import('@/views/error/index.vue')
+      redirect: '/404',
+      meta: { hidden: true }
     })
 
     isDynamicRouteAdded = true

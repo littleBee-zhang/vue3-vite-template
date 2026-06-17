@@ -1,7 +1,5 @@
 import Layout from '@/layout/Index.vue'
-// import defaultRoutes from './defaultRoutes'
 
-// 你提供的原版函数（已修复安全判断）
 export const dynamicRouteToVueRoute = (routeList) => {
   const res = []
 
@@ -9,12 +7,10 @@ export const dynamicRouteToVueRoute = (routeList) => {
   if (!routeList || !Array.isArray(routeList) || routeList.length === 0) {
     return res
   }
-
   routeList.forEach((item) => {
     const route = {
       path: item.path,
       name: item.menuName,
-      // component: item.component === 'layout/Index' ? Layout : () => import(`@/views/${item?.component}.vue`),
       component: item.component === 'layout/Index' ? Layout : item?.component,
       meta: { title: item.menuName, name: item.menuName, icon: item.icon, hidden: !!item.hidden, svgName: item?.svgName },
       children: [],
@@ -33,21 +29,5 @@ export const dynamicRouteToVueRoute = (routeList) => {
 
 // 合并菜单：默认 + 动态（动态优先）
 export const mergeMenu = (defaultMenus, dynamicMenus = []) => {
-  // if (!dynamicMenus || dynamicMenus.length === 0) {
-  //   return defaultMenus
-  // }
-
-  // const dynamicMap = new Map()
-  // dynamicMenus.forEach(m => dynamicMap.set(m.path, m))
-
-  // const result = [...dynamicMenus]
-  // defaultMenus.forEach(def => {
-  //   if (!dynamicMap.has(def.path)) {
-  //     result.push(def)
-  //   }
-  // })
-
-  // return result.sort((a, b) => (a.sort || 99) - (b.sort || 99))
-    // 方案2：本地默认菜单 + 后端菜单合并
   return [...defaultMenus, ...dynamicMenus]
 }

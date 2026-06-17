@@ -31,7 +31,6 @@
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
           欢迎您，{{ memberName }}
-          <!-- el-icon 同样连写，图标写法适配Element Plus -->
           <el-icon class="el-icon--right"><arrow-down /></el-icon>
         </span>
 
