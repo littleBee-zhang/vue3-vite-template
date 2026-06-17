@@ -86,8 +86,6 @@ router.beforeEach(async (to, from, next) => {
   // 分支4：首次加载菜单&动态路由
   try {
     const res = await getMenu()
-    console.log(res, 'res');
-
     const backendMenus = res || []
     const mergedMenus = mergeUniqueMenuByPath(menuRoutes, backendMenus)
 

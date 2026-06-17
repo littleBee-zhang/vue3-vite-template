@@ -62,7 +62,7 @@ const toggleCollapse = (value) => {
 }
 // 加载菜单
 const loadMenu = async () => {
-  console.log(store.state.menu?.menuList);
+  // console.log(store.state.menu?.menuList);
   
   const list = dynamicRouteToVueRoute(store.state.menu?.menuList || menuRoutes).filter((item) => {
     return item.meta?.title && !item.meta?.hidden

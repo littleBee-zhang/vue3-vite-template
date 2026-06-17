@@ -23,10 +23,11 @@
       </el-badge>
       <!-- 全屏按钮 -->
       <el-button text circle @click="switchFullScreen" title="全屏/退出全屏">
-        <el-icon size="18">
+        <!-- <el-icon size="18">
           <FullScreen v-if="!isFull" />
           <CircleClose v-else />
-        </el-icon>
+        </el-icon> -->
+        <Icon :name="!isFull ? 'quanping' : 'quanpingsuoxiao'" />
       </el-button>
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
