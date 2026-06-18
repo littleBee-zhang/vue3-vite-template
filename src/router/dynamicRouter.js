@@ -1,8 +1,19 @@
 import Layout from '@/layout/Index.vue'
-
+const pageModules = import.meta.glob('@/views/**/*.vue', { eager: false })
+// 判断component类型
+function parseComponent(item) {
+  if (item?.component && typeof item.component !== 'string') {
+    return item.component
+  }
+  let path = item?.component
+  
+  if (!path) return null
+  path = path.replace(/\.vue$/i, '')
+  const key = `/src/views/${path}.vue`
+  return pageModules[key] ?? (() => import('@/views/error/index.vue'))
+}
 export const dynamicRouteToVueRoute = (routeList) => {
   const res = []
-
   // 安全判断：没有菜单直接返回空数组
   if (!routeList || !Array.isArray(routeList) || routeList.length === 0) {
     return res
@@ -11,7 +22,7 @@ export const dynamicRouteToVueRoute = (routeList) => {
     const route = {
       path: item.path,
       name: item.menuName,
-      component: item.component === 'layout/Index' ? Layout : item?.component,
+      component: item.component === 'layout/Index' ? Layout : parseComponent(item),
       meta: { title: item.menuName, name: item.menuName, icon: item.icon, hidden: !!item.hidden, svgName: item?.svgName },
       children: [],
     }
