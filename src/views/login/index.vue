@@ -25,6 +25,7 @@ import { Login } from '@/api/login'
 import { getMenu } from '@/api/menu'
 import { mergeUniqueMenuByPath } from '@/router/treemenu'
 
+import { dynamicRouteToVueRoute } from '@/router/dynamicRouter'
 import { menuRoutes } from '@/router/defaultRoutes'
 // 导入加载动态路由方法
 // import { loadAsyncRoutes } from '@/router'

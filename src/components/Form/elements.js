@@ -35,7 +35,7 @@ const elements = {
   Button: ElButton,
   Transfer: ElTransfer,
   VirtualSelect,
-  Upload
+  MyUpload:Upload,
 };
 
 export default elements;

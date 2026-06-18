@@ -57,6 +57,8 @@ import socket from '@/utils/socket'
 import { LOGO_PNG } from '@/assets'
 import { Logout } from '@/api/login'
 import { getUserInformation } from '@/utils/localCache.js'
+import { mergeMenu, dynamicRouteToVueRoute } from '@/router/dynamicRouter'
+// import store from '@/store'
 const router = useRouter()
 const store = useStore()
 const route = useRoute()
@@ -84,7 +86,9 @@ const findMenu = (list, targetPath) => {
 }
 // 自动获取当前页面名称
 const pageName = computed(() => {
-  const target = findMenu(menuTree, route.path)
+  
+  const target = findMenu(dynamicRouteToVueRoute(store?.state?.menu?.menuList || []), route.path)
+  
   return target?.name || target?.meta?.title || '未知页面'
 })
 // 标记当前是否全屏

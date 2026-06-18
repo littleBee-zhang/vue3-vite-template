@@ -27,9 +27,9 @@
       </template>
 
       <!-- 操作按钮：支持自定义插槽，无插槽则显示默认 -->
-      <el-col :span="BtnSpan ? 24 : (item?.span || colSpan)">
+      <el-col :span="BtnSpan ? 24 : colSpan">
         <div class="former-actions">
-          <el-space size="16" :align="btnAlign">
+          <el-space :size="16" :align="btnAlign">
             <!-- 插槽：自定义按钮 -->
             <slot name="actions" :confirm="handleConfirm" :reset="handleReset" />
 

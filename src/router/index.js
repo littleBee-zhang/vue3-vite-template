@@ -88,9 +88,9 @@ router.beforeEach(async (to, from, next) => {
     const res = await getMenu()
     const backendMenus = res || []
     const mergedMenus = mergeUniqueMenuByPath(menuRoutes, backendMenus)
-
-    store.dispatch('menu/setMenu', mergedMenus)
+    
     const dynamicRoutes = dynamicRouteToVueRoute(mergedMenus)
+    store.dispatch('menu/setMenu', mergedMenus)
     addTreeDynamicRoutes(dynamicRoutes)
 
     // 动态路由注册完成后再注册404兜底路由

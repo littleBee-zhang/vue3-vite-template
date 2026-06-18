@@ -62,7 +62,6 @@ const toggleCollapse = (value) => {
 }
 // 加载菜单
 const loadMenu = async () => {
-  // console.log(store.state.menu?.menuList);
   
   const list = dynamicRouteToVueRoute(store.state.menu?.menuList || menuRoutes).filter((item) => {
     return item.meta?.title && !item.meta?.hidden
@@ -77,7 +76,7 @@ const loadMenu = async () => {
     ]
     menuList.value = routerList
 
-    provide('menuTree', routerList)
+    // provide('menuTree', routerList)
   } catch (e) {
     menuList.value = mergeMenu([], [])
   }

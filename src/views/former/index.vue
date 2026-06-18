@@ -2,8 +2,8 @@
   <Card>
     <Form ref="formRef" :dataSource="dataSource" :column="3" submit-text="提交" reset-text="重置" @submit="handleSubmit"
       @reset="handleReset" @fields-change="handleFieldsChange" @values-change="handleValuesChange" />
-    <Descriptions :detailData="detailInfo" :options="descList" column="2" title="">
-    </Descriptions>
+    <!-- <Descriptions :detailData="detailInfo" :options="descList" column="2" title="">
+    </Descriptions> -->
   </Card>
 </template>
 
@@ -47,7 +47,7 @@ const dataSource = [
       allowClear: true,
     },
   },
-  { key: 'upload', label: '上传', view: 'Upload' },
+  { key: 'upload', label: '上传', view: 'MyUpload' },
   { key: 'birthday', label: '生日', view: 'Picker' },
   { key: 'city', label: '城市', view: 'Cascader' },
   { key: 'remark', label: '备注', view: 'Input', viewProps: { type: 'textarea' } },

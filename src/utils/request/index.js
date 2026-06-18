@@ -195,7 +195,7 @@ function cancelAllRequest() {
     try {
       cancel('页面跳转，取消请求');
     } catch (e) {
-      console.warn('单个请求取消异常', e);
+      // console.warn('单个请求取消异常', e);
     }
   }
   pendingRequests.clear();

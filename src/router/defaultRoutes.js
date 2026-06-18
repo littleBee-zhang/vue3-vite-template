@@ -21,7 +21,7 @@ export const menuRoutes = [
   {
     path: '/dashboard',
     component: () => import('@/views/dashboard/index.vue'),
-    menuName: 'Dashboard',
+    menuName: '控制台',
     icon: 'HomeFilled',
     hidden: false,
   },
@@ -113,9 +113,9 @@ export const menuRoutesList = [
     ],
   },
   {
-    path: '/former',
+    path: '/form',
     component: () => import('@/views/former/index.vue'),
-    menuName: 'Former',
+    menuName: 'Form',
     icon: 'SvgIcon',
     svgName: 'formfill',
     hidden: false,
