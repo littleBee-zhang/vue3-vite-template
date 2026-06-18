@@ -16,8 +16,9 @@
       <!-- 左侧边栏 -->
       <el-aside :width="isCollapse ? '74px' : '220px'"
         style="background-color: #fff; height: 100%; transition: width 0.3s">
-        <el-menu router :default-openeds="defaultOpeneds" :default-active="selectPath" background-color="#fff"
-          text-color="#000" active-text-color="#409EFF" style="height: 100%; border-right: none" :collapse="isCollapse">
+        <el-menu router :default-openeds="defaultOpeneds" :collapse-tooltip="true" :default-active="selectPath"
+          background-color="#fff" text-color="#000" active-text-color="#409EFF" style="height: 100%; border-right: none"
+          class="el-menu-vertical-demo" :collapse="isCollapse">
           <sidebar-item v-for="item in menuList" :key="item.path" :item="item" :collapse="isCollapse" />
         </el-menu>
       </el-aside>
@@ -62,7 +63,7 @@ const toggleCollapse = (value) => {
 }
 // 加载菜单
 const loadMenu = async () => {
-  
+
   const list = dynamicRouteToVueRoute(store.state.menu?.menuList || menuRoutes).filter((item) => {
     return item.meta?.title && !item.meta?.hidden
   })
@@ -91,7 +92,7 @@ watch(
 onMounted(async () => {
   // await store.dispatch('menu/loadMenu')
   // console.log(1);
-  
+
   const token = sessionStorage.getItem('token')
   if (!token) return
   // 全局拉取常用字典
@@ -124,5 +125,10 @@ onMounted(async () => {
   box-sizing: border-box;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.078);
   // padding-left: 0;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
 }
 </style>

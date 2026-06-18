@@ -1,4 +1,3 @@
-// #### //
 /**
  * 单个组件等比例缩放逻辑
  * @param {HTMLElement} targetDom 要缩放的目标DOM
@@ -7,7 +6,7 @@
  * @param {number} defaultScale 【可选】默认固定缩放倍数，不传则自动按父容器适配
  * @param {boolean} enableScale 【可选】是否开启缩放，默认 true 开启
  */
-export function setComponentScale(targetDom, baseW = 750, baseH = 1662, defaultScale = null, enableScale = false) {
+export function setComponentScale(targetDom, baseW = 750, baseH = 1662, defaultScale = null, enableScale = true) {
     if (!targetDom) return
 
     // 关闭缩放：还原原始尺寸，清空缩放样式
@@ -54,14 +53,14 @@ export function setComponentScale(targetDom, baseW = 750, baseH = 1662, defaultS
     return scale
 }
 /**
- * 初始化 + 窗口 resize 监听
+ * 初始化
  * @param {HTMLElement} targetDom
  * @param {number} baseW
  * @param {number} baseH
  * @param {number|null} defaultScale 固定缩放倍数
  * @param {boolean} enableScale 是否启用缩放
  */
-export function initComponentFlexible(targetDom, baseW, baseH, defaultScale = null, enableScale = false) {
+export function initComponentFlexible(targetDom, baseW, baseH, defaultScale = null, enableScale = true) {
     const resizeHandler = () => {
         setComponentScale(targetDom, baseW, baseH, defaultScale, enableScale)
     }

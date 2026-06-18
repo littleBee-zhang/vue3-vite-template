@@ -8,6 +8,7 @@
           <Icon v-else :name="item.meta.svgName" />
         </el-icon>
         <span v-if="!collapse">{{ item?.menuName || item?.name || item?.meta?.title }}</span>
+        <!-- <span >{{ item?.menuName || item?.name || item?.meta?.title }}</span> -->
       </template>
       <sidebar-item v-for="child in item.children" :key="child.path" :item="child" :collapse="collapse" />
     </el-sub-menu>
@@ -19,6 +20,7 @@
         <Icon v-else :name="item.meta.svgName" />
       </el-icon>
       <span v-if="!collapse">{{ item?.menuName || item?.name || item?.meta?.title }}</span>
+      <!-- <span >{{ item?.menuName || item?.name || item?.meta?.title }}</span> -->
     </el-menu-item>
   </div>
 </template>

@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <h1>控制台页面</h1>
-    <p>动态路由加载成功！</p>
-  </div>
+  <Card>
+    <h1>{{ title }}</h1>
+  </Card>
 </template>
-<style lang="scss" scoped ></style>
+<script setup>
+const title = ref('控制台页面')
+</script>
+<style lang="scss" scoped>
+@use './index.module.scss';
+</style>

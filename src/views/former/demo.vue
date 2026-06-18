@@ -1,21 +1,23 @@
 <template>
-    <!-- 自定义外层容器控制均分两列 -->
-    <div class="desc-wrap">
-        <el-descriptions :column="2" border class="desc-table">
-            <el-descriptions-item label="编号">10086</el-descriptions-item>
-            <el-descriptions-item label="姓名">
-                账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态
-                <!-- <div class="text-ellipsis-wrap">
-                </div> -->
-            </el-descriptions-item>
-            <el-descriptions-item label="手机号">13900139000</el-descriptions-item>
-            <el-descriptions-item label="账号状态">
-                <el-tag type="success">正常</el-tag>
-            </el-descriptions-item>
-            <el-descriptions-item label="账户余额">6892.30</el-descriptions-item>
-            <el-descriptions-item label="创建时间">2026/6/15 14:20:00</el-descriptions-item>
-        </el-descriptions>
-    </div>
+    <Card>
+        <!-- 自定义外层容器控制均分两列 -->
+        <div class="desc-wrap">
+            <el-descriptions :column="2" border class="desc-table">
+                <el-descriptions-item label="编号">10086</el-descriptions-item>
+                <el-descriptions-item label="姓名">
+                    账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态账号状态
+                    <!-- <div class="text-ellipsis-wrap">
+                    </div> -->
+                </el-descriptions-item>
+                <el-descriptions-item label="手机号">13900139000</el-descriptions-item>
+                <el-descriptions-item label="账号状态">
+                    <el-tag type="success">正常</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item label="账户余额">6892.30</el-descriptions-item>
+                <el-descriptions-item label="创建时间">2026/6/15 14:20:00</el-descriptions-item>
+            </el-descriptions>
+        </div>
+    </Card>
 </template>
 
 <style scoped lang="scss">
