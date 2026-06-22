@@ -83,6 +83,7 @@ const handleValuesChange = (changed, all) => {
   // console.log('值变化', changed, all)
 }
 </script>
+```bash
 <!-- Props API 说明 -->
 参数	类型	默认值	说明
 formProps	Object	()=>({})	原生 el-form 全部属性透传
@@ -125,3 +126,5 @@ onClick/onReset	仅 view=Button 时，按钮点击回调
 @reset	-	点击重置按钮触发
 @fields-change	(changedFields, allFields)	字段结构变化
 @values-change	(changedFields, allFields)	表单值发生修改
+
+```

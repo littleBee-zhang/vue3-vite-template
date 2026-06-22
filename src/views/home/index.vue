@@ -6,17 +6,60 @@
         :loading="loading" :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
         @page-change="handlePageChange" @size-change="handleSizeChange" :permissions="['edit']" />
     </Card>
+    <el-dialog v-model="detailVisible" @closed="close" :title="tableParams.detailTitle">
+      <Descriptions v-if="tableParams.detailTitle === '详情'" :detailData="tableParams.row" :options="DescColumns"
+        :column="2" title="">
+      </Descriptions>
+      <Form v-if="tableParams.detailTitle === '编辑'" :labelCol="100" :form="formParams" ref="formRef"
+        :dataSource="dataSource" :column="1" submit-text="" reset-text="" />
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="close">取消</el-button>
+          <el-button v-if="tableParams.detailTitle != '详情'" type="primary" @click="detailSubmit">
+            确定
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script setup>
 import { useStore } from 'vuex'
 import { List, Delete } from '@/api/user.js'
 import { FieldMapping, generateBigDict } from '@/utils'
-import { Columns } from './columns'
+import { Columns, DescColumns } from './columns'
 import Operation from './operation.vue'
 const store = useStore()
 const dictList = store.state.dict
+// 
+const formRef = ref(null)
+const detailVisible = ref(false)
+const tableParams = reactive({
+  detailTitle: '',
+  row: {
+    // name: '',
+    // phone: '',
+    // age: '',
+    // sex: '',
+    // idCard: '',
+    // username: '',
+    // roleName: '',
+    // email: '',
+    // address: '',
+  },
+})
+const formParams = ref({
+  name: '',
+  phone: '',
+  age: '',
+  sex: '',
+  idCard: '',
+  username: '',
+  roleName: '',
+  email: '',
+  address: '',
 
+})
 // 选中数据
 const selectedRows = ref([])
 const loading = ref(false)
@@ -38,7 +81,7 @@ const actionList = [
     fixed: 'right',
     actions: [
       // 编辑
-      { key: 'edit', permission:'edit', type: 'primary', link: true, content: '编辑', onClick: (row) => actionMethod(row, 'edit') },
+      { key: 'edit', permission: 'edit', type: 'primary', link: true, content: '编辑', onClick: (row) => actionMethod(row, 'edit') },
       // 2. 删除（带确认）
       { key: 'delete', type: 'danger', link: true, content: '删除', confirm: '确定要删除吗？', onClick: (row) => actionMethod(row, 'delete') },
       // 3. 普通按钮
@@ -68,12 +111,96 @@ const del = async (id) => {
 
   }
 }
-// 表格操作方法
-const actionMethod = (row, type) => {
-  if (type === 'delete') del({ id: row.id })
-  console.log(row, type);
-}
+// 弹窗
+const close = () => {
+  // tableParams.detailTitle = ''
+  formParams.value = {
+    name: '',
+    phone: '',
+    age: '',
+    sex: '',
+    idCard: '',
+    username: '',
+    roleName: '',
+    email: '',
+    address: '',
+  }
+  formRef.value.reset()
+  detailVisible.value = false
 
+}
+const detailSubmit = async () => {
+  if (!formRef.value) return
+  try {
+    await formRef.value.validate()
+    console.log(formRef.value.formData);
+
+  } catch (err) {
+    console.error('校验失败', err)
+  }
+
+}
+// 
+// 表格操作方法
+const actionMethod = async (row, type) => {
+  if (type === 'delete') del({ id: row.id })
+  if (type === 'detail') {
+    tableParams.detailTitle = '详情'
+    formParams.value = row
+    detailVisible.value = true
+  }
+  if (type === 'edit') {
+    tableParams.detailTitle = '编辑'
+    formParams.value = row
+    detailVisible.value = true
+
+  }
+}
+const dataSource = [
+  {
+    key: 'name',
+    label: '姓名',
+    view: 'Input',
+    required: true,
+    // viewProps: {
+    //   append: () => h('span', { style: { color: 'red' } }, '*'),
+    // },
+  },
+  {
+    key: 'phone',
+    label: '手机号',
+    view: 'Input',
+    required: true,
+    rules: [{ type: 'mobile' }],
+    viewProps: { type: 'mobile' },
+  },
+  {
+    key: 'age',
+    label: '年龄',
+    view: 'Input',
+    required: true,
+  },
+  {
+    key: 'sex',
+    label: '性别',
+    view: 'VirtualSelect',
+    required: true,
+    viewProps: {
+      options: [
+        { label: '男', value: 1 },
+        { label: '女', value: 2 },
+      ],
+      allowClear: true,
+    },
+  },
+  { key: 'idCard', label: '身份证', view: 'Input', rules: [{ type: 'IDCard' }], required: true, },
+  { key: 'username', label: '英文姓名', view: 'Input', required: true, },
+  { key: 'roleName', label: '角色姓名', view: 'Input', required: true, },
+  // { key: 'upload', label: '上传', view: 'MyUpload' },
+  // { key: 'birthday', label: '生日', view: 'Picker' },
+  { key: 'email', label: '邮箱', view: 'Input', rules: [{ type: 'mail' }] },
+  { key: 'address', label: '地址', view: 'Input', viewProps: { type: 'textarea' } },
+]
 // 分页切换
 const handlePageChange = (page, size) => {
   pagination.current = page

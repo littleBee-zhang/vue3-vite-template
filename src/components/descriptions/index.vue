@@ -30,7 +30,7 @@ const props = defineProps({
     border: { type: Boolean, default: true },
     column: { type: Number, default: 2 },
     direction: { type: String, default: 'horizontal' },
-    labelWidth: { type: Number, default: '100px' },
+    labelWidth: { type: [String, Number], default: '100px' },
 })
 const emit = defineEmits(['fields-change', 'values-change', 'submit', 'reset', 'confirm'])
 const { formatValue, basePercent } = models(props, emit)

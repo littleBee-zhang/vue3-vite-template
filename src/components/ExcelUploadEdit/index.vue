@@ -20,8 +20,8 @@
             <el-table :data="tableData" border style="width:100%;margin-top:16px" highlight-current-row
                 :max-height="tableMaxHeight">
                 <el-table-column type="index" label="序号" width="60" align="center" />
-                <el-table-column v-for="(header, idx) in tableHeader" width="180" :key="idx" :prop="header" :label="header"
-                    align="center">
+                <el-table-column v-for="(header, idx) in tableHeader" :width="colWidthList[idx]" :key="idx"
+                    :prop="header" :label="header" align="center">
                     <template #default="scope">
                         <el-input v-model="tableData[scope.$index][header]" placeholder="请输入" size="small"
                             @input="handleDataChange" />
@@ -62,7 +62,16 @@ const props = defineProps({
     // 是否显示行删除按钮
     showDelBtn: { type: Boolean, default: true },
     // 外部回填数据
-    modelValue: { type: Array, default: () => [] }
+    modelValue: { type: Array, default: () => [] },
+    // 自适应列宽配置
+    autoWidthOption: {
+        type: Object,
+        default: () => ({
+            minWidth: 80,    // 最小宽度px
+            maxWidth: 350,    // 最大宽度px
+            charPx: 14        // 单个字符占用像素
+        })
+    }
 })
 
 // ===================== 自定义事件 =====================
@@ -72,7 +81,7 @@ const emit = defineEmits(['update:modelValue', 'change', 'upload-success'])
 const fileList = ref([])
 const tableHeader = ref([])
 const tableData = ref([])
-
+const colWidthList = ref([])
 // 监听外部 v-model 回填数据
 watch(
     () => props.modelValue,
@@ -84,7 +93,54 @@ watch(
     },
     { immediate: true, deep: true }
 )
+/**
+ * 核心：自动根据表头+整列内容计算每列宽度
+ */
+const autoCalcAllColumnWidth = () => {
+    const { minWidth, maxWidth, charPx } = props.autoWidthOption
+    const widths = []
 
+    // 1、第一步：先算出每列基础自适应宽度
+    tableHeader.value.forEach((header, index) => {
+        let maxCharLen = String(header).length
+        tableData.value.forEach(row => {
+            const cellVal = String(row[header] ?? '')
+            if (cellVal.length > maxCharLen) {
+                maxCharLen = cellVal.length
+            }
+        })
+        let realWidth = maxCharLen * charPx
+        realWidth = Math.max(minWidth, Math.min(maxWidth, realWidth))
+        widths.push(realWidth)
+    })
+
+    // 外部自定义列宽覆盖
+    // if (props.columnWidths.length) {
+    //     props.columnWidths.forEach((w, idx) => {
+    //         if (widths[idx] !== undefined) widths[idx] = w
+    //     })
+    // }
+
+    // 2、获取表格容器可视宽度（el-table 实际可用宽度）
+    const tableEl = document.querySelector('.excel-upload-edit .table-container .el-table__body-wrapper')
+    if (!tableEl || widths.length === 0) {
+        colWidthList.value = widths
+        return
+    }
+    const tableTotalWidth = tableEl.clientWidth
+    const sumColWidth = widths.reduce((sum, w) => sum + w, 0)
+
+    // 3、判断：总宽度不足，最后一列填充剩余空间
+    if (sumColWidth < tableTotalWidth) {
+        const remainSpace = tableTotalWidth - sumColWidth
+        const lastIndex = widths.length - 1
+        widths[lastIndex] = widths[lastIndex] + remainSpace
+        // 依然限制最大宽度，防止极端过宽
+        widths[lastIndex] = Math.min(widths[lastIndex], maxWidth * 2)
+    }
+
+    colWidthList.value = widths
+}
 // 数据同步父组件
 const syncParentData = () => {
     emit('update:modelValue', tableData.value)
@@ -158,6 +214,7 @@ const handleFileChange = (file) => {
             }
             tableHeader.value = headers
             tableData.value = rows
+            autoCalcAllColumnWidth()
             syncParentData()
             emit('upload-success', rows)
             ElMessage.success(`解析成功，共${rows.length}行数据`)

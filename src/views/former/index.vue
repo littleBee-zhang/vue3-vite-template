@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <Form ref="formRef" :dataSource="dataSource" :column="3" submit-text="提交" reset-text="重置" @submit="handleSubmit"
+    <Form ref="formRef" :dataSource="dataSource" :column="3" submit-text="" reset-text="" @submit="handleSubmit"
       @reset="handleReset" @fields-change="handleFieldsChange" @values-change="handleValuesChange" />
     <!-- <Descriptions :detailData="detailInfo" :options="descList" column="2" title="">
     </Descriptions> -->

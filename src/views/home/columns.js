@@ -6,3 +6,15 @@ export const Columns = [
     { title: '邮箱', dataIndex: 'email', ellipsis: true, align: 'center', },
     { title: '地址', dataIndex: 'address', ellipsis: true, align: 'center', },
 ]
+export const DescColumns = [
+    { label: '姓名', prop: 'name', },
+    { label: '年龄', prop: 'age', },
+    { label: '手机号', prop: 'phone', },
+    { label: '身份证号', prop: 'idCard', },
+    { label: '邮箱', prop: 'email', decimal: 2 },
+    { label: '地址', prop: 'address', },
+    { label: '英文姓名', prop: 'username', },
+    { label: '角色姓名', prop: 'roleName', },
+    { label: '性别', prop: 'sex', },
+    { label: 'ID', prop: 'id', },
+]
