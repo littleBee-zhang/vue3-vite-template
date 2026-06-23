@@ -2,7 +2,6 @@
   <div class="home">
     <Card>
       <!-- <Icon name="jiaoseguanli" /> -->
-
       <Table row-key="id" ref="tableRef" :columns="[...Columns, ...actionList]" :data-source="dataList"
         :loading="loading" :pagination="pagination" :showIndex="true" @selection-change="handleSelectionChange"
         @page-change="handlePageChange" @size-change="handleSizeChange" :permissions="['edit']" />
