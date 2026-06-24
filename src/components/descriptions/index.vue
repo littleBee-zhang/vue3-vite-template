@@ -4,7 +4,7 @@
             <template v-for="item in options" :key="item.prop">
                 <el-descriptions-item :label="item.label" :span="item.span || 1">
                     <!-- 优先执行render渲染函数 -->
-                    <component class="value-content" v-if="item.render" :is="item.render" :row="detailData" />
+                    <component class="value-content" v-if="item.render" :is="item.render(detailData)" :row="detailData" />
 
                     <!-- tag标签类型 -->
                     <el-tag class="value-content" v-else-if="item.type === 'tag'"

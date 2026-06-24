@@ -22,7 +22,7 @@ export default function (req) {
         password: Random.string(),
         phone: `1${Random.integer(1000000000, 9999999999)}`,
         roleName: Random.cname(),
-        sex: Random.pick([1, 2, 3]),
+        sex: Random.pick([1, 2]),
         username: Random.name(),
       })),
       pages: pageNum,

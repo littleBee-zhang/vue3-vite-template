@@ -15,6 +15,10 @@ export const DescColumns = [
     { label: '地址', prop: 'address', },
     { label: '英文姓名', prop: 'username', },
     { label: '角色姓名', prop: 'roleName', },
-    { label: '性别', prop: 'sex', },
+    {
+        label: '性别', prop: 'sex', render: (row) => {
+            return h('span', row.sex === 1 ? '男' : '女')
+        }
+    },
     { label: 'ID', prop: 'id', },
 ]
